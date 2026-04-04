@@ -289,7 +289,7 @@ This project is submitted to the **Gemma 4 Good Hackathon** on Kaggle:
 
 ## 👤 About the Developer
 
-AI major at Gansu Political Science and Law University in China. Solo developer.
+**Sheng Wei** — AI major at **Gansu Political Science and Law University (GSUPL)** in China. Solo developer.
 
 Previous Projects: **InSeeVision** (Gemma 3 accessibility project).
 
