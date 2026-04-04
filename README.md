@@ -116,8 +116,8 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 │                      │                          │
 │              ┌───────▼────────┐                 │
 │              │  Smart Router  │                 │
-│              └───┬────────┬───┘                 │
-│                  │        │                     │
+│              └───┬───────┬─-──┘                 │
+│                  │       │                      │
 │     ┌────────────▼─┐  ┌──▼───────────────┐      │
 │     │  On-Device   │  │   Ollama HTTP    │      │
 │     │  Gemma 4 E2B │  │   Connection     │      │
