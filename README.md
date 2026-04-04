@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="assets/gemmate_logo.png" width="120" alt="GemmaMate Logo"/>
+  <img src="assets/gemmate_logo.png" width="120" alt="GemMate Logo"/>
 </p>
+
 
 
 
@@ -48,26 +49,53 @@ GemMate transforms how university students learn by combining **Google's Gemma 4
 ### 🧠 AI Chat with Gemma 4
 Chat with Gemma 4 E2B to understand complex concepts. Ask questions in any of 6 supported languages, and get bilingual explanations tailored to your level.
 
+<p align="center">   <img src="assets/demo1.jpg" width="350" alt="Chat Demo"/> </p>
+
 ### 📚 Smart Flashcard Decks
 Generate flashcard decks from any chat conversation. Cards use the **SM-2 spaced repetition algorithm** for scientifically-optimized review schedules. Decks are displayed as beautiful fan-shaped card piles with flip animations.
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Front</b></td>
+      <td align="center"><b>Back</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/demo7.jpg" width="300"/></td>
+      <td align="center"><img src="assets/demo8.jpg" width="300"/></td>
+    </tr>
+  </table>
+</div>
 
 ### 📊 Interactive Quizzes
 AI-generated multiple-choice quizzes that test your understanding. Wrong answers automatically become flashcards for targeted review.
 
+<p align="center">   <img src="assets/demo2.jpg" width="260" />   <img src="assets/demo3.jpg" width="260" />   <img src="assets/demo4.jpg" width="260" /> </p>
+
 ### 📷 Camera / OCR
 Photograph textbook pages, lecture slides, or handwritten notes. Gemma 4's vision capabilities extract and explain the content.
+
+<p align="center">   <img src="assets/demo9.jpg" width="350" alt="Chat Demo"/> </p>
 
 ### 🎤 Voice Input
 Tap the microphone to ask questions by voice — perfect for hands-free studying. Supports Chinese, English, Japanese, Korean, French, and Spanish.
 
+<p align="center">   <img src="assets/demo10.jpg" width="350" alt="Chat Demo"/> </p>
+
 ### 🌍 6 Languages
 Full UI localization and AI responses in: English, 简体中文, 日本語, 한국어, Français, Español.
+
+<p align="center">   <img src="assets/languages.jpg" width="350" alt="Chat Demo"/> </p>
 
 ### 🔔 Smart Notifications
 Spaced repetition reminders, daily study prompts, and inactivity nudges keep you on track.
 
+<p align="center">   <img src="assets/Notifications.jpg" width="350" alt="Chat Demo"/> </p>
+
 ### 🎨 Neomorphic Design
 Beautiful neomorphic UI with dark/light mode, customizable accent colors, and adjustable font sizes.
+
+<p align="center">   <img src="assets/theme.jpg" width="350" alt="Chat Demo"/> </p>
 
 ---
 
