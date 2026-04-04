@@ -275,18 +275,6 @@ lib/
 
 ---
 
-## 🏆 Competition Tracks
-
-This project is submitted to the **Gemma 4 Good Hackathon** on Kaggle:
-
-| Track | How GemMate Qualifies |
-|-------|------------------------|
-| **Main Track** | Full-featured study app powered by Gemma 4 E2B / Gemma 4 E4B |
-| **Future of Education** | AI-powered flashcards, quizzes, and personalized explanations |
-| **Ollama Special** | Smart routing between on-device and Ollama-served Gemma 4 |
-
----
-
 ## 👤 About the Developer
 
 **Sheng Wei** — AI major at **Gansu Political Science and Law University (GSUPL)** in China. Solo developer.
