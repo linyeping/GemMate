@@ -118,8 +118,8 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 │                      │                          │
 │              ┌───────▼────────┐                 │
 │              │  Smart Router  │                 │
-│              └───┬────────┬───┘                 │
-│                  │        │                     │
+│              └───┬───────┬─-──┘                 │
+│                  │       │                      │
 │     ┌────────────▼─┐  ┌──▼───────────────┐      │
 │     │  On-Device   │  │   Ollama HTTP    │      │
 │     │  Gemma 4 E2B │  │   Connection     │      │
@@ -274,18 +274,6 @@ lib/
     ├── connection_indicator.dart # Connection status pill
     └── model_badge.dart         # Model source badge
 ```
-
----
-
-## 🏆 Competition Tracks
-
-This project is submitted to the **Gemma 4 Good Hackathon** on Kaggle:
-
-| Track | How GemMate Qualifies |
-|-------|------------------------|
-| **Main Track** | Full-featured study app powered by Gemma 4 E2B / Gemma 4 E4B |
-| **Future of Education** | AI-powered flashcards, quizzes, and personalized explanations |
-| **Ollama Special** | Smart routing between on-device and Ollama-served Gemma 4 |
 
 ---
 
