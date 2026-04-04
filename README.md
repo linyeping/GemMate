@@ -105,7 +105,7 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                  📱 PHONE                       │
+│                  📱 PHONE                      │
 │             GemMate Flutter App                 │
 │                                                 │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐       │
@@ -127,8 +127,8 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 └──────────────────────────────┼──────────────────┘
                                │ WiFi (Local Network)
 ┌──────────────────────────────▼───────────────────┐
-│                  💻 LAPTOP                        │
-│           Ollama + Gemma 4 E4B                    │
+│                  💻 LAPTOP                       │
+│           Ollama + Gemma 4 E4B                   │
 │         (RTX 4060, <1s response)                 │
 └──────────────────────────────────────────────────┘
 ```
