@@ -42,6 +42,8 @@ GemMate transforms how university students learn by combining **Google's Gemma 4
 >
 > ✅ **The Solution:** GemMate runs Gemma 4 E2B on your own hardware, generating personalized flashcards, quizzes, and explanations — even on an airplane.
 
+<p align="center">   <img src="assets/cover.png" width="800" alt="Chat Demo"/> </p>
+
 ---
 
 ## ✨ Features
