@@ -6,12 +6,11 @@ import '../models/chat_message.dart';
 import '../stores/connection_store.dart';
 
 class SmartRouter {
-  final OllamaService ollama;
+  final OllamaService ollama = OllamaService();
   final LocalGemmaService localGemma;
   final ConnectionStore connectionStore;
 
   SmartRouter({
-    required this.ollama,
     required this.localGemma,
     required this.connectionStore,
   });
@@ -45,7 +44,7 @@ class SmartRouter {
 
     // Priority 1: Laptop available → use laptop
     if (hasLaptop) {
-      print('SmartRouter: using laptop (Ollama)');
+      print('SmartRouter: using laptop (Ollama - ${ollama.currentModel})');
       return await ollama.chatWithHistory(history, prompt);
     }
 

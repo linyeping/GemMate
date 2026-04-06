@@ -24,6 +24,7 @@ dependencies:
   flutter_gemma: ^0.13.0
   file_picker: ^8.0.0
   speech_to_text: ^7.0.0
+  google_mlkit_text_recognition: ^0.13.0
 
 flutter:
   uses-material-design: true

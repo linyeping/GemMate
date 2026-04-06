@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
-import 'package:permission_handler/permission_handler.dart';
 import '../core/constants.dart';
 import '../stores/locale_store.dart';
 import '../models/flashcard.dart';
@@ -107,7 +106,10 @@ class NotificationService {
   }
 
   Future<void> scheduleReminders(int dueCount, int totalCount) async {
-    await _plugin.cancelAll();
+    // Note: We use IDs 10, 11, 12 here to avoid collision with user-scheduled ones (1, 2)
+    await _plugin.cancel(10);
+    await _plugin.cancel(11);
+    await _plugin.cancel(12);
     
     final lang = LocaleStore().languageCode;
     
@@ -118,7 +120,7 @@ class NotificationService {
           : 'You have $dueCount flashcards ready for review — keep your streak going!';
           
       await scheduleReviewReminder(
-        id: 1,
+        id: 10,
         title: title,
         body: body,
         scheduledTime: DateTime.now().add(const Duration(hours: AppConstants.reviewReminderHours)),
@@ -131,14 +133,14 @@ class NotificationService {
         : 'Your knowledge is fading... How about a quick 2-minute review?';
         
     await scheduleReviewReminder(
-      id: 2,
+      id: 11,
       title: inactivityTitle,
       body: inactivityBody,
       scheduledTime: DateTime.now().add(const Duration(hours: AppConstants.inactivityReminderHours)),
     );
 
     await _scheduleDaily(
-      id: 3,
+      id: 12,
       title: lang == 'zh' ? '☀️ 早上好！' : '☀️ Good morning!',
       body: lang == 'zh' ? '今天也要和 Gemma 一起进步吗？' : 'Ready to study with Gemma today?',
       hour: AppConstants.dailyReminderHour,
@@ -175,8 +177,75 @@ class NotificationService {
     );
   }
 
-  Future<void> cancelInactivityReminder() async {
+  Future<void> scheduleDaily({
+    required bool enabled,
+    required int hour,
+    required int minute,
+  }) async {
+    await _plugin.cancel(1);
+    if (!enabled) return;
+    
+    await _plugin.zonedSchedule(
+      1,
+      '📚 GemMate',
+      'Time to study! Open GemMate for your daily session.',
+      _nextInstanceOfTime(hour, minute),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'study_reminders',
+          'Study Reminders',
+          channelDescription: 'Daily study reminders',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> scheduleReview({
+    required bool enabled,
+    required int hour,
+    required int minute,
+  }) async {
     await _plugin.cancel(2);
+    if (!enabled) return;
+    
+    await _plugin.zonedSchedule(
+      2,
+      '🧠 GemMate',
+      'You have flashcards due for review!',
+      _nextInstanceOfTime(hour, minute),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'study_reminders',
+          'Study Reminders',
+          channelDescription: 'Review reminders',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+    if (scheduled.isBefore(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+    return scheduled;
+  }
+
+  Future<void> cancelInactivityReminder() async {
+    await _plugin.cancel(11);
   }
 
   Future<void> showInstant({required String title, required String body}) async {

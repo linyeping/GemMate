@@ -47,6 +47,7 @@ class AppLocalizations {
   String get answer => _getValue('answer');
   String get noFlashcardsYet => _getValue('noFlashcardsYet');
   String get noFlashcardsHint => _getValue('noFlashcardsHint');
+  String get noChatsYet => _getValue('noChatsYet');
   String get dueNow => _getValue('dueNow');
   String get reviewed => _getValue('reviewed');
   String get deleteChat => _getValue('deleteChat');
@@ -81,7 +82,7 @@ class AppLocalizations {
   String get promptPlan => _getValue('promptPlan');
   String get promptTranslate => _getValue('promptTranslate');
 
-  // New keys
+  // Theme & Settings
   String get themeSettings => _getValue('themeSettings');
   String get dangerZone => _getValue('dangerZone');
   String get fontSize => _getValue('fontSize');
@@ -91,8 +92,6 @@ class AppLocalizations {
   String get deleteDataWarning => _getValue('deleteDataWarning');
   String get delete => _getValue('delete');
   String get flashcardReview => _getValue('flashcardReview');
-  
-  // Danger Zone specific full phrases
   String get confirmDeleteAllChats => _getValue('confirmDeleteAllChats');
   String get confirmClearAllFlashcards => _getValue('confirmClearAllFlashcards');
 
@@ -122,6 +121,23 @@ class AppLocalizations {
   String get hfLoginDesc => _getValue('hfLoginDesc');
   String get login => _getValue('login');
   String get optional => _getValue('optional');
+
+  // Study Camera
+  String get studyCamera => _getValue('studyCamera');
+  String get takePhoto => _getValue('takePhoto');
+  String get pickFromGallery => _getValue('pickFromGallery');
+  String get analysisComplete => _getValue('analysisComplete');
+  String get askFollowUp => _getValue('askFollowUp');
+  String get newPhoto => _getValue('newPhoto');
+  String get sendToAI => _getValue('sendToAI');
+  String get analyzingImage => _getValue('analyzingImage');
+  String get extractingText => _getValue('extractingText');
+  String get imagePromptHint => _getValue('imagePromptHint');
+  String get solveThis => _getValue('solveThis');
+  String get explainKeyPoints => _getValue('explainKeyPoints');
+  String get summarize => _getValue('summarize');
+  String get noTextDetected => _getValue('noTextDetected');
+  String get connectLaptopForImageAnalysis => _getValue('connectLaptopForImageAnalysis');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

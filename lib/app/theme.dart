@@ -4,7 +4,7 @@ enum AppColorScheme {
   ocean, sunset, forest, lavender, aurora, cherry, midnight, candy
 }
 
-class GemmaStudyTheme {
+class GemMateTheme {
   static Color currentHighlight = Colors.white;
   static Color currentShadow = const Color(0xFFA3B1C6);
 

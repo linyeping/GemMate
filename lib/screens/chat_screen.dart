@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:permission_handler/permission_handler.dart';
 import '../models/chat_message.dart';
 import '../stores/chat_store.dart';
 import '../stores/flashcard_store.dart';
@@ -48,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
   bool _speechAvailable = false;
+  List<stt.LocaleName> _availableLocales = [];
 
   @override
   void initState() {
@@ -55,7 +57,6 @@ class _ChatScreenState extends State<ChatScreen> {
     final ollama = OllamaService();
     final localGemma = LocalGemmaService();
     _router = SmartRouter(
-      ollama: ollama,
       localGemma: localGemma,
       connectionStore: _connectionStore,
     );
@@ -84,58 +85,131 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       _speechAvailable = await _speech.initialize(
         onError: (error) {
-          if (mounted) setState(() => _isListening = false);
+          print('Speech error: ${error.errorMsg}');
+          if (error.permanent) {
+            if (mounted) setState(() => _isListening = false);
+          }
         },
         onStatus: (status) {
-          if (status == 'notListening' && mounted) {
-            setState(() => _isListening = false);
+          print('Speech status: $status');
+          if (status == 'done') {
+            if (mounted) setState(() => _isListening = false);
           }
         },
       );
+      print('Speech available: $_speechAvailable');
+      
+      if (_speechAvailable) {
+        _availableLocales = await _speech.locales();
+        print('Available locales: ${_availableLocales.map((l) => l.localeId).toList()}');
+      }
     } catch (e) {
+      print('Speech init failed: $e');
       _speechAvailable = false;
     }
   }
 
-  void _toggleVoiceInput() {
+  Future<void> _toggleVoiceInput() async {
     if (!_speechAvailable) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Speech recognition not available')),
-      );
-      return;
+      await _initSpeech();
+      if (!_speechAvailable) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Speech recognition not available. Check microphone permission in phone Settings.')),
+          );
+        }
+        return;
+      }
     }
 
     if (_isListening) {
-      _speech.stop();
-      setState(() => _isListening = false);
+      await _speech.stop();
+      if (mounted) setState(() => _isListening = false);
     } else {
-      setState(() => _isListening = true);
-      _speech.listen(
-        onResult: (result) {
-          setState(() {
-            _textController.text = result.recognizedWords;
-            _textController.selection = TextSelection.fromPosition(
-              TextPosition(offset: _textController.text.length),
-            );
-          });
-        },
-        listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 3),
-        localeId: _getLocaleId(),
-      );
+      final micPermission = await Permission.microphone.request();
+      if (!micPermission.isGranted) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Microphone permission required for voice input.')),
+          );
+        }
+        return;
+      }
+
+      if (mounted) setState(() => _isListening = true);
+      
+      final localeId = _getLocaleId();
+      print('Starting speech with locale: $localeId');
+
+      try {
+        await _speech.listen(
+          onResult: (result) {
+            if (mounted) {
+              setState(() {
+                _textController.text = result.recognizedWords;
+                _textController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: _textController.text.length),
+                );
+              });
+              if (result.finalResult) {
+                if (mounted) setState(() => _isListening = false);
+              }
+            }
+          },
+          listenFor: const Duration(seconds: 60),
+          pauseFor: const Duration(seconds: 5),
+          localeId: localeId.isNotEmpty ? localeId : null,
+          listenOptions: stt.SpeechListenOptions(
+            listenMode: stt.ListenMode.dictation,
+            cancelOnError: false,
+            partialResults: true,
+          ),
+        );
+      } catch (e) {
+        print('Speech listen error: $e');
+        if (mounted) {
+          setState(() => _isListening = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Voice input failed. Try changing app language in Settings.')),
+          );
+        }
+      }
     }
   }
 
   String _getLocaleId() {
     final locale = _localeStore.currentLocale;
-    switch (locale.languageCode) {
-      case 'zh': return 'zh_CN';
-      case 'ja': return 'ja_JP';
-      case 'ko': return 'ko_KR';
-      case 'fr': return 'fr_FR';
-      case 'es': return 'es_ES';
-      default: return 'en_US';
+    
+    final preferred = <String, List<String>>{
+      'zh': ['zh_CN', 'zh_TW', 'zh-CN', 'zh-TW', 'cmn-Hans-CN', 'yue-Hant-HK'],
+      'ja': ['ja_JP', 'ja-JP'],
+      'ko': ['ko_KR', 'ko-KR'],
+      'fr': ['fr_FR', 'fr-FR'],
+      'es': ['es_ES', 'es-ES', 'es_MX', 'es-MX'],
+      'en': ['en_US', 'en-US', 'en_GB', 'en-GB'],
+    };
+    
+    final candidates = preferred[locale.languageCode] ?? ['en_US'];
+    
+    for (final candidate in candidates) {
+      for (final available in _availableLocales) {
+        if (available.localeId == candidate || 
+            available.localeId.replaceAll('-', '_') == candidate.replaceAll('-', '_')) {
+          print('Using speech locale: ${available.localeId}');
+          return available.localeId;
+        }
+      }
     }
+    
+    for (final available in _availableLocales) {
+      if (available.localeId.startsWith(locale.languageCode)) {
+        print('Using speech locale (fallback): ${available.localeId}');
+        return available.localeId;
+      }
+    }
+    
+    print('No matching locale found, using system default');
+    return '';
   }
 
   void _onChatStoreUpdate() {
@@ -324,23 +398,23 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: EdgeInsets.fromLTRB(12, 8, 12, MediaQuery.of(context).padding.bottom + 8),
             decoration: BoxDecoration(
               color: theme.scaffoldBackgroundColor,
-              border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.15))),
+              border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.15))),
             ),
             child: Row(
               children: [
                 GestureDetector(
                   onTap: _toggleVoiceInput,
-                  child: Container(
-                    width: 36, height: 36,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _isListening 
-                          ? const Color(0xFF06D6A0) 
-                          : Colors.transparent,
+                      color: _isListening ? const Color(0xFF06D6A0) : Colors.transparent,
                     ),
                     child: Icon(
                       _isListening ? Icons.mic : Icons.mic_none,
-                      size: 20,
+                      size: 22,
                       color: _isListening ? Colors.white : Colors.grey,
                     ),
                   ),
@@ -350,14 +424,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Container(
                     constraints: const BoxConstraints(maxHeight: 120),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: TextField(
                       controller: _textController,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: _isListening ? 'Listening...' : 'Message GemmaStudy...',
+                        hintText: _isListening ? '🎤 Listening...' : 'Message GemMate...',
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       ),
@@ -373,7 +447,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       shape: BoxShape.circle,
                       color: _textController.text.trim().isNotEmpty 
                           ? const Color(0xFF4361EE) 
-                          : Colors.grey.withOpacity(0.3),
+                          : Colors.grey.withValues(alpha: 0.3),
                     ),
                     child: const Icon(Icons.arrow_upward, size: 20, color: Colors.white),
                   ),

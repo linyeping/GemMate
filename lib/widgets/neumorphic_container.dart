@@ -37,7 +37,7 @@ class NeumorphicContainer extends StatelessWidget {
     // Dynamically calculate colors based on current scheme and brightness
     // This avoids static variable race conditions
     final themeStore = ThemeStore();
-    final colors = GemmaStudyTheme.getNeumorphicColors(themeStore.currentScheme, isDark);
+    final colors = GemMateTheme.getNeumorphicColors(themeStore.currentScheme, isDark);
     
     final highlightColor = colors.high;
     final shadowColor = colors.shadow;

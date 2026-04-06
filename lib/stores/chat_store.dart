@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/chat_message.dart';
 import '../models/chat_session.dart';
 import '../services/storage_service.dart';
-import '../services/ollama_service.dart';
 import '../services/smart_router.dart';
 import '../services/local_gemma_service.dart';
 import '../stores/connection_store.dart';
@@ -15,7 +14,6 @@ class ChatStore extends ChangeNotifier {
 
   final StorageService _storage = StorageService();
   final SmartRouter _router = SmartRouter(
-    ollama: OllamaService(),
     localGemma: LocalGemmaService(),
     connectionStore: ConnectionStore(),
   );

@@ -1,5 +1,5 @@
 const Map<String, String> fr = {
-  'appName': 'GemmaStudy',
+  'appName': 'GemMate',
   'studyChat': 'Chat d\'Étude',
   'flashcards': 'Flashcards',
   'settings': 'Paramètres',
@@ -48,8 +48,8 @@ const Map<String, String> fr = {
   'chatSessions': 'Sessions de chat',
   'about': 'À propos',
   'darkMode': 'Mode sombre',
-  'welcomeMessage': '👋 Salut ! Je suis GemmaStudy, votre compagnon d\'étude IA.\n\nJe peux vous aider :\n• Expliquer des concepts dans votre langue\n• Créer des flashcards\n• Générer des quiz\n• Scanner des manuels avec l\'appareil photo\n• Créer des plans d\'étude\n\nQue souhaitez-vous étudier ?',
-  'themeSettings': 'Thème GemmaStudy',
+  'welcomeMessage': '👋 Salut ! Je suis GemMate, votre compagnon d\'étude IA.\n\nJe peux vous aider :\n• Expliquer des concepts dans votre langue\n• Créer des flashcards\n• Générer des quiz\n• Scanner des manuels avec l\'appareil photo\n• Créer des plans d\'étude\n\nQue souhaitez-vous étudier ?',
+  'themeSettings': 'Thème GemMate',
   'dangerZone': 'Zone de Danger',
   'fontSize': 'Taille de police',
   'appearance': 'Apparence',

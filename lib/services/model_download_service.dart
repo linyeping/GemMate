@@ -14,20 +14,21 @@ class ModelDownloadProgress {
 class ModelDownloadService {
   // 对齐文件名
   static const String modelFileName = 'gemma-4-E2B-it.litertlm';
-  
-  static const String modelUrlOriginal = 
+
+  static const String modelUrlOriginal =
     'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/$modelFileName';
-  
-  static const String modelUrlMirror = 
-    'https://hf-mirror.com/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/$modelFileName';
-  
+
+  static const String modelUrlMirror =
+    'https://modelscope.cn/api/v1/models/LYP071333/Gemma4-E2B/repo?Revision=master&FilePath=$modelFileName';
+
   static String modelUrl = modelUrlMirror;
   static const String adbModelPath = '/sdcard/Download/$modelFileName';
-  
+
   static void setUseMirror(bool useMirror) {
     modelUrl = useMirror ? modelUrlMirror : modelUrlOriginal;
   }
-  
+
+
   bool _isInstalled = false;
 
   /// 检查模型是否已通过插件安装

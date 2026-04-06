@@ -17,7 +17,12 @@ class FlashcardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accentColor = card.accentColor ?? theme.colorScheme.primary;
+    
+    final accentColors = [
+      const Color(0xFF4361EE), const Color(0xFF7209B7), const Color(0xFFF72585),
+      const Color(0xFF06D6A0), const Color(0xFF4CC9F0), const Color(0xFFFFBE0B),
+    ];
+    final accentColor = accentColors[card.groupId.hashCode.abs() % accentColors.length];
 
     return GestureDetector(
       onTap: onTap,
@@ -82,7 +87,7 @@ class FlashcardWidget extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: accentColor.withOpacity(0.15),
+            color: accentColor.withValues(alpha: 0.15),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

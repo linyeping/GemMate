@@ -1,8 +1,7 @@
-import '../core/constants.dart';
-import '../core/utils.dart';
 import '../models/chat_message.dart';
 import '../models/flashcard.dart';
 import '../stores/locale_store.dart';
+import '../core/json_utils.dart';
 import 'ollama_service.dart';
 
 class FlashcardGenerator {
@@ -12,12 +11,20 @@ class FlashcardGenerator {
 
   Future<List<Flashcard>> generate(List<ChatMessage> history, String topic) async {
     final langInstruction = LocaleStore().aiLanguageInstruction;
-    final systemPrompt = '${AppConstants.flashcardSystemPrompt}\n\n'
-        'Return ONLY a JSON array of flashcards. '
-        'Each flashcard must have "front" and "back" fields as non-empty strings. '
-        'Example: [{"front":"Question?","back":"Answer."}] '
-        '$langInstruction';
     
+    final conversationText = history.map((m) => '${m.isUser ? "User" : "AI"}: ${m.content}').join('\n');
+    
+    final prompt = 'Based on this conversation, create flashcards.\n\n'
+        'YOU MUST respond with ONLY a valid JSON array. No other text.\n'
+        'DO NOT include any explanation before or after the JSON.\n'
+        'DO NOT use markdown code blocks.\n'
+        'Each object MUST have exactly two keys: "front" and "back".\n'
+        'DO NOT use "question" or "answer" as keys.\n\n'
+        'CORRECT FORMAT EXAMPLE:\n'
+        '[{"front":"What is X?","back":"X is Y"},{"front":"What is Z?","back":"Z is W"}]\n\n'
+        'Conversation content:\n$conversationText\n\n'
+        'Respond with ONLY the JSON array:';
+
     final groupId = DateTime.now().millisecondsSinceEpoch.toString();
     
     // Extract topic from first user message if topic param is empty
@@ -33,24 +40,33 @@ class FlashcardGenerator {
             : firstUserMsg.content);
 
     try {
-      final response = await ollama.chat(
-        'Based on our conversation, generate flashcards about "$topic" as a JSON array. '
-        'Return ONLY the JSON array, no other text.',
-        systemPrompt: systemPrompt,
+      final responseText = await ollama.chat(
+        prompt,
+        systemPrompt: 'Respond with ONLY a JSON array. $langInstruction',
       );
 
-      final parsedCards = AppUtils.safeJsonList<Map<String, dynamic>>(
-        response,
-        (json) => json,
-      );
-
-      return parsedCards.map((json) => Flashcard(
-        id: DateTime.now().microsecondsSinceEpoch.toString() + '_${parsedCards.indexOf(json)}',
-        groupId: groupId,
-        groupName: groupName,
-        front: json['front']?.toString() ?? '',
-        back: json['back']?.toString() ?? '',
-      )).where((f) => f.front.isNotEmpty && f.back.isNotEmpty).toList();
+      final cards = robustJsonParse(responseText);
+      
+      return cards.map((json) {
+        final front = json['front']?.toString() 
+            ?? json['question']?.toString() 
+            ?? json['q']?.toString() 
+            ?? '';
+        final back = json['back']?.toString() 
+            ?? json['answer']?.toString() 
+            ?? json['a']?.toString() 
+            ?? '';
+        
+        if (front.isEmpty || back.isEmpty) return null;
+        
+        return Flashcard(
+          id: DateTime.now().microsecondsSinceEpoch.toString() + '_${cards.indexOf(json)}',
+          groupId: groupId,
+          groupName: groupName,
+          front: front,
+          back: back,
+        );
+      }).whereType<Flashcard>().toList();
     } catch (e) {
       print('Flashcard generation error: $e');
       return [];

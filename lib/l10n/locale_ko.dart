@@ -1,5 +1,5 @@
 const Map<String, String> ko = {
-  'appName': 'GemmaStudy',
+  'appName': 'GemMate',
   'studyChat': '학습 채팅',
   'flashcards': '플래시카드',
   'settings': '설정',
@@ -48,7 +48,7 @@ const Map<String, String> ko = {
   'chatSessions': '채팅 세션 수',
   'about': '정보',
   'darkMode': '다크 모드',
-  'welcomeMessage': '👋 안녕하세요! GemmaStudy입니다. 당신의 AI 학습 파트너입니다.\n\n도와드릴 수 있는 내용:\n• 개념 설명 (당신의 언어로)\n• 플래시카드 생성\n• 퀴즈 생성\n• 카메라로 교과서 스캔\n• 학습 계획 작성\n\n오늘은 무엇을 공부할까요?',
+  'welcomeMessage': '👋 안녕하세요! GemMate입니다. 당신의 AI 학습 파트너입니다.\n\n도와드릴 수 있는 내용:\n• 개념 설명 (당신의 언어로)\n• 플래시카드 생성\n• 퀴즈 생성\n• 카메라로 교과서 스캔\n• 학습 계획 작성\n\n오늘은 무엇을 공부할까요?',
   'themeSettings': '테마 설정',
   'dangerZone': '위험 구역',
   'fontSize': '글자 크기',

@@ -1,0 +1,5 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+Running Gradle task 'assembleDebug'...                          
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+Running Gradle task 'assembleDebug'...                            143.6s
+Gradle build failed to produce an .apk file. It's likely that this file was generated under E:\Antigravity\GemMate\build, but the tool couldn't find it.

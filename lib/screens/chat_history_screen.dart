@@ -68,7 +68,7 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
                 children: [
                   Icon(Icons.history_outlined, size: 64, color: theme.colorScheme.outline.withValues(alpha: 0.5)),
                   const SizedBox(height: 16),
-                  Text(l10n.noFlashcardsYet, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                  Text(l10n.noChatsYet, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                 ],
               ),
             )

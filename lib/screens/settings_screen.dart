@@ -133,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
           _buildMenuEntry(
             icon: Icons.wifi_find,
             title: l10n.connection,
-            subtitle: _ipController.text,
+            subtitle: OllamaService().baseUrl.replaceAll('http://', '').replaceAll(':11434', ''),
             onTap: () async {
               await Navigator.push(context, MaterialPageRoute(builder: (_) => _ConnectionPage(
                 controller: _ipController,
@@ -777,6 +777,7 @@ class _ConnectionPage extends StatefulWidget {
 class _ConnectionPageState extends State<_ConnectionPage> {
   bool _testingConnection = false;
   bool? _connectionSuccess;  // null = not tested, true = success, false = failed
+  String _selectedModel = OllamaService().currentModel;
 
   Future<void> _testConnection() async {
     setState(() {
@@ -794,9 +795,10 @@ class _ConnectionPageState extends State<_ConnectionPage> {
           _connectionSuccess = success;
         });
         if (success) {
-          ConnectionStore().setLaptopConnected(true);
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('ollama_ip', widget.controller.text.trim());
+          OllamaService().updateBaseUrl(widget.controller.text.trim());
+          ConnectionStore().setLaptopConnected(true);
         } else {
           ConnectionStore().setLaptopConnected(false);
         }
@@ -815,6 +817,8 @@ class _ConnectionPageState extends State<_ConnectionPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.connection)),
       body: ListView(
@@ -888,6 +892,27 @@ class _ConnectionPageState extends State<_ConnectionPage> {
               ],
             ),
           ],
+          const SizedBox(height: 32),
+          Text('Model', style: theme.textTheme.titleSmall),
+          const SizedBox(height: 8),
+          NeumorphicContainer(
+            isPressed: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: DropdownButtonFormField<String>(
+              value: _selectedModel,
+              decoration: const InputDecoration(border: InputBorder.none),
+              items: const [
+                DropdownMenuItem(value: 'gemma4:e2b', child: Text('Gemma 4 E2B (fast, 2B)')),
+                DropdownMenuItem(value: 'gemma4:e4b', child: Text('Gemma 4 E4B (powerful, 4B)')),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedModel = value);
+                  OllamaService().saveModel(value);
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
