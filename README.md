@@ -229,50 +229,72 @@ adb push gemma-4-E2B-it.litertlm /sdcard/Download/
 
 ```
 lib/
-├── main.dart                    # App entry point + model initialization
+├── main.dart                          # App entry point + model initialization
 ├── app/
-│   ├── router.dart              # Bottom navigation + page routing
-│   └── theme.dart               # Neomorphic theme (light/dark)
+│   ├── router.dart                    # Bottom navigation + page routing
+│   └── theme.dart                     # Neumorphic theme (light/dark)
 ├── core/
-│   └── constants.dart           # App constants + colors
+│   ├── constants.dart                 # App constants + colors
+│   ├── json_utils.dart                # JSON parsing utilities
+│   ├── text_utils.dart                # Text processing and formatting
+│   └── utils.dart                     # General helper functions
 ├── l10n/
-│   ├── app_localizations.dart   # i18n delegate
-│   └── locale_*.dart            # EN, ZH, JA, KO, FR, ES
+│   ├── app_localizations.dart         # i18n delegate
+│   ├── locale_en.dart                 # English localization
+│   ├── locale_es.dart                 # Spanish localization
+│   ├── locale_fr.dart                 # French localization
+│   ├── locale_ja.dart                 # Japanese localization
+│   ├── locale_ko.dart                 # Korean localization
+│   └── locale_zh.dart                 # Chinese localization
 ├── models/
-│   ├── chat_message.dart        # Chat message model
-│   ├── chat_session.dart        # Chat session model
-│   ├── flashcard.dart           # Flashcard with SM-2 fields + grouping
-│   └── quiz_question.dart       # Quiz question model
-├── services/
-│   ├── ollama_service.dart      # HTTP client for Ollama API
-│   ├── local_gemma_service.dart # On-device Gemma 4 via flutter_gemma
-│   ├── smart_router.dart        # Smart model selection logic
-│   ├── flashcard_generator.dart # AI-powered flashcard creation
-│   ├── quiz_generator.dart      # AI-powered quiz generation
-│   ├── model_download_service.dart # Model download + mirror support
-│   └── notification_service.dart   # Study reminders
-├── stores/
-│   ├── chat_store.dart          # Chat session persistence
-│   ├── flashcard_store.dart     # Flashcard persistence + groups
-│   ├── connection_store.dart    # Connection state management
-│   ├── locale_store.dart        # Language preferences
-│   └── theme_store.dart         # Theme + font size preferences
+│   ├── chat_message.dart              # Chat message model
+│   ├── chat_session.dart              # Chat session model
+│   ├── flashcard.dart                 # Flashcard with SM-2 fields + grouping
+│   ├── quiz.dart                      # Quiz state model
+│   ├── quiz_question.dart             # Quiz question model
+│   └── study_plan.dart                # Spaced repetition schedule model
 ├── screens/
-│   ├── chat_screen.dart         # Main chat UI + voice input
-│   ├── chat_history_screen.dart # Chat session management
-│   ├── flashcard_screen.dart    # Deck gallery with fan piles
-│   ├── deck_study_screen.dart   # Card flip study session
-│   ├── quiz_screen.dart         # Interactive quiz
-│   ├── capture_screen.dart      # Camera / OCR
-│   ├── settings_screen.dart     # Settings with sub-pages
-│   └── onboarding_screen.dart   # First-launch setup + model download
+│   ├── capture_screen.dart            # Camera / OCR feature
+│   ├── chat_history_screen.dart       # Chat session management
+│   ├── chat_screen.dart               # Main chat UI + voice input
+│   ├── deck_study_screen.dart         # Card flip study session
+│   ├── flashcard_screen.dart          # Deck gallery with fan piles
+│   ├── home_screen.dart               # Main dashboard
+│   ├── onboarding_screen.dart         # First-launch setup + model download
+│   ├── paper_screen.dart              # Document/exam paper analysis
+│   ├── quiz_screen.dart               # Interactive quiz UI
+│   ├── review_screen.dart             # Scheduled review dashboard
+│   └── settings_screen.dart           # Settings with sub-pages
+├── services/
+│   ├── flashcard_generator.dart       # AI-powered flashcard creation
+│   ├── local_gemma_service.dart       # On-device Gemma 4 via flutter_gemma
+│   ├── model_download_service.dart    # Model download + mirror support
+│   ├── notification_service.dart      # Study reminders
+│   ├── ollama_service.dart            # HTTP client for Ollama API
+│   ├── quiz_generator.dart            # AI-powered quiz generation
+│   ├── smart_router.dart              # Smart model selection logic
+│   ├── storage_service.dart           # Local file/DB storage operations
+│   └── study_tools.dart               # Core study algorithms (SM-2, etc.)
+├── stores/
+│   ├── chat_store.dart                # Chat session persistence
+│   ├── connection_store.dart          # Connection state management
+│   ├── flashcard_store.dart           # Flashcard persistence + groups
+│   ├── locale_store.dart              # Language preferences
+│   └── theme_store.dart               # Theme + font size preferences
 └── widgets/
-    ├── neumorphic_container.dart # Neomorphic card widget
-    ├── neumorphic_button.dart   # Neomorphic button widget
-    ├── message_bubble.dart      # Chat message bubble
-    ├── flashcard_widget.dart    # Individual flashcard
-    ├── connection_indicator.dart # Connection status pill
-    └── model_badge.dart         # Model source badge
+    ├── animated_avatar.dart           # AI/User animated profile picture
+    ├── chat_session_tile.dart         # Chat history list item
+    ├── color_scheme_picker.dart       # Theme color selector
+    ├── connection_indicator.dart      # Connection status pill
+    ├── download_progress_widget.dart  # Model download status UI
+    ├── flashcard_widget.dart          # Individual flashcard UI
+    ├── loading_indicator.dart         # Custom loading animation
+    ├── message_bubble.dart            # Chat message bubble
+    ├── model_badge.dart               # Model source indicator (Edge/Laptop)
+    ├── neumorphic_button.dart         # Neumorphic button widget
+    ├── neumorphic_container.dart      # Neumorphic card widget
+    ├── quick_action_chips.dart        # Suggested prompt chips
+    └── quiz_option_tile.dart          # Quiz multiple choice button
 ```
 
 ---
