@@ -301,7 +301,7 @@ lib/
 
 ## 👤 About the Developer
 
-**Sheng Wei** — AI major at **Gansu Political Science and Law University (GSUPL)** in China. Solo developer.
+**Sheng Wei** — AI major at **Gansu Political Science and Law University (GSUPL)** in China. A Solo developer.
 
 Previous Projects: **InSeeVision** (Gemma 3 accessibility project).
 
