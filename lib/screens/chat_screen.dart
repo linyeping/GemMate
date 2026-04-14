@@ -84,10 +84,45 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _initSpeech() async {
     try {
       _speechAvailable = await _speech.initialize(
+        // `androidIntentLookup` switches the plugin from direct SpeechRecognizer
+        // API to an intent-based lookup. This is the recommended path on
+        // Samsung/OneUI devices where the direct API returns an empty locale
+        // list even when Google Speech Services is installed. It also makes
+        // the plugin pick Google as the backend more reliably than the OEM's.
+        options: [stt.SpeechToText.androidIntentLookup],
         onError: (error) {
           print('Speech error: ${error.errorMsg}');
-          if (error.permanent) {
-            if (mounted) setState(() => _isListening = false);
+          if (mounted) setState(() => _isListening = false);
+
+          // error_language_not_supported: device's recognizer (often Samsung's
+          // default on Galaxy phones) can't handle the requested locale. Tell
+          // the user how to switch to Google Speech Services, which covers
+          // far more languages and supports on-demand language pack download.
+          if (error.errorMsg == 'error_language_not_supported' && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 8),
+                content: const Text(
+                  'Voice input: your device\'s speech recognizer does not '
+                  'support this language.\n\n'
+                  'Fix: Settings → General management → Language & input → '
+                  'On-screen keyboard / Voice input → switch to '
+                  '"Google Speech Services", then download the language pack.',
+                ),
+              ),
+            );
+          } else if (error.errorMsg == 'error_permission' && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 8),
+                content: const Text(
+                  'Microphone access blocked.\n\n'
+                  'Fix: Settings → Apps → GemMate → Permissions → Microphone '
+                  '→ "Allow only while using the app".\n'
+                  'Also check the system mic toggle in Quick Settings.',
+                ),
+              ),
+            );
           }
         },
         onStatus: (status) {
@@ -98,7 +133,7 @@ class _ChatScreenState extends State<ChatScreen> {
         },
       );
       print('Speech available: $_speechAvailable');
-      
+
       if (_speechAvailable) {
         _availableLocales = await _speech.locales();
         print('Available locales: ${_availableLocales.map((l) => l.localeId).toList()}');
@@ -163,6 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
             listenMode: stt.ListenMode.dictation,
             cancelOnError: false,
             partialResults: true,
+            onDevice: true,
           ),
         );
       } catch (e) {
@@ -207,8 +243,27 @@ class _ChatScreenState extends State<ChatScreen> {
         return available.localeId;
       }
     }
-    
-    print('No matching locale found, using system default');
+
+    // Last-resort fallback: prefer any available en_* locale over the system
+    // default. Many Samsung devices ship with a recognizer whose system
+    // default isn't actually supported (common on zh_CN users), so falling
+    // through to null/empty causes `error_language_not_supported`. en_US is
+    // almost universally present.
+    for (final available in _availableLocales) {
+      if (available.localeId.startsWith('en')) {
+        print('No match for ${locale.languageCode}, falling back to ${available.localeId}');
+        return available.localeId;
+      }
+    }
+
+    // Absolute last resort: let the plugin pick whatever's first in the list.
+    if (_availableLocales.isNotEmpty) {
+      final first = _availableLocales.first.localeId;
+      print('No en_* either, using first available: $first');
+      return first;
+    }
+
+    print('No locales enumerated at all, using system default');
     return '';
   }
 
