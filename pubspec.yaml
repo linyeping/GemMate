@@ -1,5 +1,6 @@
 name: GemMate
 description: AI-powered study companion built with Gemma 4
+version: 1.2.0+3
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
