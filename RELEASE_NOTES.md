@@ -1,41 +1,40 @@
-# GemMate v1.2.0 — Offline Stability & Full i18n
+# GemMate v1.2.1 — Voice Input Reliability on Samsung / OneUI
 
-This release focuses on making **on-device Gemma 4 E2B** actually usable end-to-end, fixing several crashes that appeared when users ran fully offline, and closing long-standing gaps in localization.
+A focused patch release improving voice input on Samsung Galaxy / OneUI devices, where the default recognizer frequently returns an empty locale list and fails with `error_language_not_supported` even when Google Speech Services is installed.
 
-## 🐛 Critical Fixes
+## 🐛 Fixes
 
-### On-device model no longer crashes on long inputs
-- Context window raised from **1024 → 2048 tokens** so realistic prompts (OCR text + instructions) no longer blow past the limit.
-- Fixed a latent bug where the shared singleton model session was being closed after every request, corrupting the next call with `INTERNAL: Failed to invoke the compiled model`. We now close only the per-request chat, never the model.
-- OCR text is capped at 3500 chars before being fed to the local model, preventing textbook-page prompts from overflowing.
+### Prefer Google Speech Services over the OEM recognizer
+The plugin now initializes with `androidIntentLookup`, so it resolves the recognizer via an intent instead of the direct `SpeechRecognizer` API. On Samsung OneUI this reliably picks **Google Speech Services** over the OEM engine — the OEM engine only supports a narrow set of locales and often reports no enumerated locales at all.
 
-### Downloaded model now loads correctly on cold start
-- `flutter_gemma`'s `fromNetwork().install()` silently stores weights under a `repo/` directory and registers **the directory** as the active model path — which crashes the native engine with `Unsupported model format: .../app_flutter/repo`. GemMate now detects this after download, copies the weights to a canonical `.litertlm` path, and re-registers via `fromFile()`.
-- Startup logic was hardened with a size-based fallback: if no canonical file exists, scan the app directory for any file >50 MB and recover from it. The old behavior would wrongly mark the model as uninstalled and ask the user to re-download 3 GB.
+### Use installed offline language packs
+`SpeechListenOptions` now sets `onDevice: true`. Previously the plugin defaulted to online recognition against Google servers, which failed with `error_network` for users behind restrictive networks — even when Chinese / English offline packs were already installed on the device. Offline packs are now used directly.
 
-### Download mirror switched to hf-mirror.com
-- The previous China mirror (`modelscope.cn/api/v1/.../repo`) was unstable on multi-GB downloads — connections were dropped by the CDN at 70–80% with `unexpected end of stream`.
-- We now default to **hf-mirror.com**, a static-file CDN that supports proper HTTP range requests and resumable downloads.
+### Smarter locale fallback
+Previously, if the app language had no matching system locale (common on Samsung where `zh_CN` is not always enumerated), recognition would fail silently. The fallback chain is now:
 
-## ✨ Features
+1. Preferred locale list for the UI language (e.g. `zh_CN`, `cmn-Hans-CN`)
+2. Any locale whose code starts with the UI language (e.g. `zh_TW` for a `zh` UI)
+3. Any `en_*` locale (almost universally present)
+4. The first enumerated locale on the device
+5. System default (empty string)
 
-### Offline flashcards & quizzes
-Previously, flashcard and quiz generation required a laptop connection. They now automatically fall back to the on-device Gemma 4 E2B when offline, so students can build study materials anywhere.
+### Actionable error messages
+`error_language_not_supported` and `error_permission` now surface a Snackbar with concrete remediation steps (switch recognizer / grant mic permission) instead of failing silently.
 
-### AI responses respect UI language (offline path)
-The on-device model's system prompt now injects the current locale instruction on every call, so switching the UI to 中文 / 日本語 / 한국어 / Français / Español also changes the AI's reply language — matching the behavior of the online path.
+## 📌 Known issue for mainland China users
 
-## 🌍 Localization
+If Google offline speech packs are not installed **and** the device cannot reach Google's servers, voice input will report `error_network`. Two workarounds:
 
-Added **100+ missing translation keys** across Spanish, French, and Korean — including the entire Onboarding flow, Study Camera screen, Model Management page, and Hugging Face login dialog. All six locales (en / zh / ja / ko / fr / es) are now fully aligned.
+- Install the offline language pack: *Settings → Speech Services by Google → Offline speech recognition → download Chinese (Simplified)*
+- Connect to an international network
+
+This does not affect users outside mainland China.
 
 ## 📥 Install
 
 - **APK**: download `app-release.apk` below (Android 8.0+)
 - **Source build**: `flutter pub get && flutter build apk --release`
-- **Optional on-device model** (~3 GB, enables offline mode):
-  - In-app: Settings → Model Management → Download
-  - Manual: `adb push gemma-4-E2B-it.litertlm /sdcard/Download/` then import in Settings
 
 ## 🙏 Credits
 
