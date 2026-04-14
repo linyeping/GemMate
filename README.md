@@ -150,7 +150,7 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 
 📺 **[Watch the 3-minute demo video →](https://www.youtube.com/watch?v=WLpTthrq46g)**
 
-📦 **[Download APK →](https://github.com/linyeping/GemMate/releases/tag/v1.0.0)**
+📦 **[Download APK →](https://github.com/linyeping/GemMate/releases/latest)**
 
 ---
 
