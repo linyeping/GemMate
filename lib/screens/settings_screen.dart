@@ -269,6 +269,57 @@ class _ModelManagementPageState extends State<_ModelManagementPage> {
       })
       .install();
 
+      // `.fromNetwork(...).install()` stores the weights inside flutter_gemma's
+      // internal `repo/` directory and registers that *directory path* as the
+      // active model. The next time the native engine tries to load the model
+      // it crashes with "Unsupported model format: .../app_flutter/repo"
+      // because `createFromModelPath` only accepts a concrete `.litertlm`
+      // file. Workaround: locate the downloaded `.litertlm`, copy it to a
+      // stable path, and re-install via `.fromFile(...)` so the registered
+      // path is a real file.
+      try {
+        final appDir = await getApplicationDocumentsDirectory();
+        final targetPath =
+            '${appDir.path}/${ModelDownloadService.modelFileName}';
+        if (!File(targetPath).existsSync()) {
+          // flutter_gemma may store the download without a `.litertlm`
+          // extension (e.g. `repo/model` or a hashed name). Pick the
+          // largest regular file under appDir that is NOT our target — the
+          // model weights dwarf any metadata file.
+          File? found;
+          int foundSize = 0;
+          for (final entity in appDir.listSync(recursive: true)) {
+            if (entity is File && entity.path != targetPath) {
+              try {
+                final size = entity.lengthSync();
+                if (size > foundSize && size > 50 * 1024 * 1024) {
+                  found = entity;
+                  foundSize = size;
+                }
+              } catch (_) {}
+            }
+          }
+          if (found != null) {
+            print('Post-download: picked ${found.path} (${foundSize ~/ (1024 * 1024)} MB)');
+            await found.copy(targetPath);
+          }
+        }
+        if (File(targetPath).existsSync()) {
+          // Clear any stale registration pointing at the repo/ directory
+          // before re-installing, so the plugin's internal state is
+          // overwritten rather than appended to.
+          try {
+            await FlutterGemma.uninstallModel(
+                ModelDownloadService.modelFileName);
+          } catch (_) {}
+          await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
+              .fromFile(targetPath)
+              .install();
+        }
+      } catch (e) {
+        print('Post-download re-registration failed: $e');
+      }
+
       await _downloadService.markInstalled();
       ConnectionStore().setLocalModelAvailable(true);
       await LocalGemmaService().initialize();

@@ -18,7 +18,15 @@ class ModelDownloadService {
   static const String modelUrlOriginal =
     'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/$modelFileName';
 
+  // hf-mirror.com is a CDN-backed static file mirror — unlike modelscope's
+  // /api/v1/.../repo endpoint, it serves plain HTTP ranges and doesn't drop
+  // the connection mid-stream on multi-GB downloads. Path layout matches
+  // HuggingFace exactly, just swap the host.
   static const String modelUrlMirror =
+    'https://hf-mirror.com/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/$modelFileName';
+
+  // Kept around as a fallback if hf-mirror is unreachable.
+  static const String modelUrlMirrorModelScope =
     'https://modelscope.cn/api/v1/models/LYP071333/Gemma4-E2B/repo?Revision=master&FilePath=$modelFileName';
 
   static String modelUrl = modelUrlMirror;

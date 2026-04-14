@@ -1,8 +1,10 @@
 import '../models/chat_message.dart';
 import '../models/quiz_question.dart';
 import '../stores/locale_store.dart';
+import '../stores/connection_store.dart';
 import '../core/json_utils.dart';
 import 'ollama_service.dart';
+import 'local_gemma_service.dart';
 
 class QuizGenerator {
   final OllamaService ollama;
@@ -11,7 +13,7 @@ class QuizGenerator {
 
   Future<List<QuizQuestion>> generate(List<ChatMessage> history, String topic, {int count = 5}) async {
     final langInstruction = LocaleStore().aiLanguageInstruction;
-    
+
     final conversationText = history.map((m) => '${m.isUser ? "User" : "AI"}: ${m.content}').join('\n');
 
     final prompt = 'Based on this conversation, create a quiz.\n\n'
@@ -27,10 +29,21 @@ class QuizGenerator {
         'Respond with ONLY the JSON array:';
 
     try {
-      final responseText = await ollama.chat(
-        prompt,
-        systemPrompt: 'Respond with ONLY a JSON array. $langInstruction',
-      );
+      // Route: laptop-online → Ollama; else on-device Gemma.
+      final useLocal = !ConnectionStore().isLaptopConnected &&
+          LocalGemmaService().isAvailable;
+      final String responseText;
+      if (useLocal) {
+        responseText = await LocalGemmaService().generate(
+          prompt,
+          systemPromptOverride: 'Respond with ONLY a JSON array.',
+        );
+      } else {
+        responseText = await ollama.chat(
+          prompt,
+          systemPrompt: 'Respond with ONLY a JSON array. $langInstruction',
+        );
+      }
 
       final questions = robustJsonParse(responseText);
       

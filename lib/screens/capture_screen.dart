@@ -94,15 +94,28 @@ class _CaptureScreenState extends State<CaptureScreen> {
           final userPrompt = _promptController.text.trim().isNotEmpty
               ? _promptController.text.trim()
               : 'Analyze the following content';
-          
-          final combinedPrompt = 
-              'The following text was extracted from a photo via OCR:\n\n'
-              '---\n$ocrText\n---\n\n'
+
+          // Cap OCR text to keep the total prompt within the local model's
+          // 2048-token context window. ~3500 chars is a safe upper bound for
+          // mixed CJK/Latin text after accounting for the fixed prefix/suffix
+          // and the model's response budget.
+          const int maxOcrChars = 3500;
+          String safeOcr = ocrText.trim();
+          bool truncated = false;
+          if (safeOcr.length > maxOcrChars) {
+            safeOcr = safeOcr.substring(0, maxOcrChars);
+            truncated = true;
+          }
+
+          final combinedPrompt =
+              'The following text was extracted from a photo via OCR'
+              '${truncated ? ' (truncated to first $maxOcrChars chars)' : ''}:\n\n'
+              '---\n$safeOcr\n---\n\n'
               'User instruction: $userPrompt\n\n'
               'If the content contains a question or problem, solve it step by step. '
               'If it contains notes, summarize the key points. '
               'Respond in plain text without LaTeX formatting.';
-          
+
           response = await LocalGemmaService().generate(combinedPrompt);
         }
       }

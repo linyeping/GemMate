@@ -63,16 +63,47 @@ void main() async {
               .install();
           print('Main: Model registered from external→internal copy');
         } else {
-          // Model was installed via flutter_gemma's own download
-          // Try to just get the active model — it may already be registered
-          print('Main: No model file found, trying flutter_gemma internal...');
+          // Fallback: flutter_gemma's `fromNetwork().install()` stores
+          // weights inside a `repo/` directory and the file often lacks a
+          // `.litertlm` extension — so scan by size instead, picking the
+          // largest regular file over 50 MB.
+          print('Main: No canonical file, scanning by size...');
+          File? found;
+          int foundSize = 0;
           try {
+            for (final entity in appDir.listSync(recursive: true)) {
+              if (entity is File) {
+                try {
+                  final size = entity.lengthSync();
+                  if (size > foundSize && size > 50 * 1024 * 1024) {
+                    found = entity;
+                    foundSize = size;
+                  }
+                } catch (_) {}
+              }
+            }
+          } catch (e) {
+            print('Main: scan failed: $e');
+          }
+          if (found != null) {
+            print('Main: Found weights at ${found.path} (${foundSize ~/ (1024 * 1024)} MB)');
+            if (found.path != internalPath) {
+              await found.copy(internalPath);
+            }
+            // Clear stale registration (likely still pointing at repo/ dir)
+            // before re-installing from the canonical file path.
+            try {
+              await FlutterGemma.uninstallModel(
+                  ModelDownloadService.modelFileName);
+            } catch (_) {}
             await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
                 .fromFile(internalPath)
                 .install();
-          } catch (e) {
-            print('Main: flutter_gemma internal registration failed: $e');
-            // Mark as not installed since we can't find the model
+            print('Main: Model re-registered from canonical path');
+          } else {
+            // Genuinely not found anywhere — clear the installed flag so the
+            // UI can prompt the user to re-download.
+            print('Main: No weights found anywhere, clearing flag');
             await downloadService.deleteModel();
           }
         }

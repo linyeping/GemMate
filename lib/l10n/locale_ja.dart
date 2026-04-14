@@ -94,4 +94,13 @@ const Map<String, String> ja = {
   'summarize': '要約する',
   'noTextDetected': '写真からテキストが検出されませんでした。',
   'connectLaptopForImageAnalysis': 'フル画像分析（図解、数学など）にはPCに接続してください。',
+  'noChatsYet': 'チャットがまだありません',
+  'promptFlashcards': 'この会話から単語カードを作成してください。',
+  'promptQuiz': 'この会話からクイズを作成してください。',
+  'loginToHF': 'Hugging Face ログイン',
+  'hfUsername': 'ユーザー名',
+  'hfToken': 'アクセストークン',
+  'hfLoginDesc': '任意。保護されたモデルの場合のみ必要です。',
+  'login': 'ログイン',
+  'optional': '任意',
 };

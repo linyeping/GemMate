@@ -95,4 +95,12 @@ const Map<String, String> en = {
   'summarize': 'Summarize',
   'noTextDetected': 'No text detected in the photo.',
   'connectLaptopForImageAnalysis': 'Connect to laptop for full image analysis (diagrams, math, etc).',
+  'promptFlashcards': 'Create flashcards from this conversation.',
+  'promptQuiz': 'Create a quiz from this conversation.',
+  'loginToHF': 'Hugging Face Login',
+  'hfUsername': 'Username',
+  'hfToken': 'Access Token',
+  'hfLoginDesc': 'Optional. Only needed for gated models.',
+  'login': 'Log In',
+  'optional': 'Optional',
 };

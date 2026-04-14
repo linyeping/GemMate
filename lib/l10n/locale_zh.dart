@@ -95,4 +95,12 @@ const Map<String, String> zh = {
   'summarize': '总结',
   'noTextDetected': '未检测到文字。',
   'connectLaptopForImageAnalysis': '连接电脑可进行完整图片分析（图表、数学等）。',
+  'promptFlashcards': '根据这段对话生成闪卡。',
+  'promptQuiz': '根据这段对话生成测验。',
+  'loginToHF': '登录 Hugging Face',
+  'hfUsername': '用户名',
+  'hfToken': '访问令牌',
+  'hfLoginDesc': '可选。仅下载受保护模型时需要。',
+  'login': '登录',
+  'optional': '可选',
 };
