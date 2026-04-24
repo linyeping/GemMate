@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import '../models/chat_message.dart';
 import '../stores/theme_store.dart';
+import 'code_block.dart';
 import 'model_badge.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -62,7 +63,7 @@ class MessageBubble extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isUser 
                         ? const Color(0xFF4361EE) 
-                        : theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(20),
                       topRight: const Radius.circular(20),
@@ -81,6 +82,9 @@ class MessageBubble extends StatelessWidget {
                       : MarkdownBody(
                           data: message.content,
                           selectable: true,
+                          builders: {
+                            'pre': CodeBlockBuilder(),
+                          },
                           styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
                             p: theme.textTheme.bodyMedium?.copyWith(
                               fontSize: fontSize,
@@ -89,6 +93,11 @@ class MessageBubble extends StatelessWidget {
                             listBullet: theme.textTheme.bodyMedium?.copyWith(
                               fontSize: fontSize,
                             ),
+                            // Remove the default grey box — CodeBlockBuilder
+                            // renders its own styled container.
+                            code: const TextStyle(inherit: false),
+                            codeblockDecoration: const BoxDecoration(),
+                            codeblockPadding: EdgeInsets.zero,
                           ),
                         ),
                 ),
