@@ -98,17 +98,62 @@ Spaced repetition reminders, daily study prompts, and inactivity nudges keep you
 ### 🗺️ AI Mind Map Generator
 One tap generates a visual, color-coded mind map from your conversation — rendered with bezier curves and an interactive pan/zoom canvas. Perfect for organizing complex topics before an exam.
 
+<p align="center"><img src="assets/MindMap.jpg" width="350" alt="Mind Map"/></p>
+
 ### 📄 Document Import (PDF + DOCX)
 Import PDF and Word (.docx) files directly into chat. GemMate extracts the text and feeds it to the AI, so you can ask questions, generate flashcards, or get a summary from any document — no cloud upload needed.
+
+<p align="center"><img src="assets/PDF%20%2B%20DOCX.jpg" width="350" alt="PDF and DOCX Import"/></p>
 
 ### 📷 Camera Math Solver
 Switch the camera screen to **Math Solver** mode to photograph handwritten equations or printed problems. The AI solves them step-by-step, and each step can be saved as a flashcard for drill practice.
 
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Mode Select</b></td>
+      <td align="center"><b>Analyzing</b></td>
+      <td align="center"><b>Step-by-Step Result</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/Mathematics%20Solver-1.jpg" width="220"/></td>
+      <td align="center"><img src="assets/Mathematics%20Solver-2.jpg" width="220"/></td>
+      <td align="center"><img src="assets/Mathematics%20Solver-3.jpg" width="220"/></td>
+    </tr>
+  </table>
+</div>
+
 ### 🔲 QR Code Sharing & Gallery Scan
 Share flashcard decks with classmates via a generated QR code, or scan a QR from your gallery image — no need to point the camera at a screen.
 
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Scan Interface</b></td>
+      <td align="center"><b>Share via QR</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/QR%20Code%20Scanning%20Interface.jpg" width="280"/></td>
+      <td align="center"><img src="assets/Example%20QR%20Code.jpg" width="280"/></td>
+    </tr>
+  </table>
+</div>
+
 ### 🍅 Custom Pomodoro Timer
 Set your own focus and break durations (1–120 min / 1–60 min) directly from the home screen. Type the number or tap +/−. Sessions are tracked daily and stored locally.
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Timer</b></td>
+      <td align="center"><b>Custom Settings</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/Pomodoro%20timer%20interface.jpg" width="280"/></td>
+      <td align="center"><img src="assets/Pomodoro%20timer%20settings.jpg" width="280"/></td>
+    </tr>
+  </table>
+</div>
 
 ### 🎨 Neomorphic Design
 Beautiful neomorphic UI with dark/light mode, customizable accent colors, and adjustable font sizes.
