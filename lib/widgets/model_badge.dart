@@ -28,7 +28,7 @@ class ModelBadge extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          isRemote ? 'Gemma 4 E2B' : 'Gemma 3n E2B',
+          isRemote ? 'Gemma 4 E4B · Laptop' : 'Gemma 4 E2B · On-device',
           style: TextStyle(
             fontSize: 10,
             color: theme.colorScheme.outline,

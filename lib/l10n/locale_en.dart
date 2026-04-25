@@ -103,4 +103,57 @@ const Map<String, String> en = {
   'hfLoginDesc': 'Optional. Only needed for gated models.',
   'login': 'Log In',
   'optional': 'Optional',
+
+  // Home screen
+  'goodMorning': '☀️ Good morning',
+  'goodAfternoon': '👋 Good afternoon',
+  'goodEvening': '🌙 Good evening',
+  'readyToStudy': 'Ready to study?',
+  'dayStreak': 'Day Streak',
+  'totalDays': 'Total Days',
+  'today': 'Today',
+  'cards': 'Cards',
+  'chats': 'Chats',
+  'breakTime': 'Break Time',
+  'focusSession': 'Focus Session',
+  'timerRest': 'rest',
+  'timerFocus': 'focus',
+  'reset': 'Reset',
+  'finishEarly': 'Finish early',
+  'breakTip': 'Step away from the screen. Stretch, breathe, hydrate. 🌿',
+  'focusTip': 'During a focus session, put your phone face-down and close other apps.',
+  'sessionComplete': '🎉 Session Complete!',
+  'takeABreak': '☕ Take a break',
+  'keepGoing': '🚀 Keep going',
+  'breakOver': 'Break over! Ready for another session? 💪',
+  'pomodorosDoneToday': 'Pomodoro #{count} done today.',
+  'streakLabel': 'Streak: {streak} days 🔥',
+  'sessionsCompletedToday': '{count} sessions completed today',
+
+  // QR Gallery
+  'scanFromGallery': 'Scan from Gallery',
+  'noQrInImage': 'No QR code found in this image',
+
+  // Custom Timer
+  'customTimer': 'Custom Timer',
+  'workDuration': 'Work Duration',
+  'breakDuration': 'Break Duration',
+  'minutesUnit': 'min',
+  'apply': 'Apply',
+
+  // Camera / Math Solver
+  'mathSolver': 'Math Solver',
+  'generalMode': 'General',
+  'solveStepByStep': 'Solve step by step',
+  'stepSolution': 'Step-by-Step Solution',
+  'saveMathCards': 'Save Steps as Cards',
+
+  // Document Import
+  'importDocument': 'Import Document (PDF / Word)',
+
+  // Mind Map
+  'mindMap': 'Mind Map',
+  'generatingMindMap': 'Generating mind map...',
+  'mindMapHint': 'Pinch to zoom  ·  Drag to pan',
+  'mindMapError': 'Could not generate mind map. Try again.',
 };

@@ -14,11 +14,16 @@ class LocalGemmaService {
   static const String _strictFormattingRules =
       'Do not use thinking or reasoning blocks. Respond directly. '
       'CRITICAL FORMATTING RULES: '
-      'Do NOT use any Markdown formatting. No ** for bold. No * for italic. No # for headers. '
+      'Do NOT use ** for bold, * for italic, or # for headers in normal text. '
       'Do NOT use LaTeX formatting. No \\frac, no \\sqrt, no \$\$ symbols. '
-      'Write everything in plain text only. '
       'For math: write fractions as a/b, exponents as x^2, square roots as sqrt(x). '
-      'For emphasis: just use regular text, no asterisks or special characters.';
+      'IMPORTANT CODE RULE: Whenever you write any code (any programming language, '
+      'shell commands, config files, etc.), you MUST wrap it in a fenced code block '
+      'with the language identifier. For example: '
+      '```cpp\n#include <iostream>\nint main() {}\n``` '
+      'or ```python\nprint("hello")\n``` '
+      'NEVER output code as plain text. Always use triple backtick fences. '
+      'The language tag (cpp, python, dart, js, etc.) is required.';
 
   // Build the system prompt fresh on every call so the current locale is
   // respected even if the user switched languages mid-session.
@@ -65,7 +70,7 @@ class LocalGemmaService {
       // OCR/chat request crashes with INTERNAL: Failed to invoke the compiled
       // model). Only close the per-request chat session.
       try { await chat.close(); } catch (_) {}
-      return sanitizeResponse(result);
+      return sanitizeResponse(autoFenceBareCcode(result));
     } catch (e) {
       print('LocalGemma generate error: $e');
       throw Exception('Local model error: $e');
@@ -79,9 +84,11 @@ class LocalGemmaService {
       final model = await FlutterGemma.getActiveModel(maxTokens: 2048);
       final chat = await model.createChat();
       
-      // Inject system instructions as first message if possible, or prepend to first message
-      await chat.addQueryChunk(Message(text: _strictSystemPrompt, isUser: false));
-
+      // Prepend system instructions to the first user message (same pattern as
+      // generate()) because flutter_gemma doesn't have a dedicated system-role
+      // API — injecting it as isUser:false causes the model to treat it as an
+      // assistant turn, which corrupts conversation context.
+      bool systemInjected = false;
       final recent = history.length > 6 ? history.sublist(history.length - 6) : history;
       for (final msg in recent) {
         try {
@@ -95,7 +102,12 @@ class LocalGemmaService {
             isUser = msg.isUser ?? false;
           }
           if (text != null && text.isNotEmpty) {
-            await chat.addQueryChunk(Message(text: text, isUser: isUser));
+            // Inject system prompt before the very first user message.
+            final enriched = (isUser && !systemInjected)
+                ? '$_strictSystemPrompt\n\n$text'
+                : text;
+            if (isUser) systemInjected = true;
+            await chat.addQueryChunk(Message(text: enriched, isUser: isUser));
           }
         } catch (_) {}
       }
@@ -112,7 +124,7 @@ class LocalGemmaService {
 
       // See note in generate(): do not close the shared singleton model.
       try { await chat.close(); } catch (_) {}
-      return sanitizeResponse(result);
+      return sanitizeResponse(autoFenceBareCcode(result));
     } catch (e) {
       print('LocalGemma generateWithHistory error: $e');
       throw Exception('Local model error: $e');

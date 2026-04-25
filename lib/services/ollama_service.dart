@@ -79,7 +79,9 @@ class OllamaService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return sanitizeResponse(data['message']['content'] as String);
+        final content = data['message']?['content'];
+        if (content == null) throw Exception('Ollama returned null content');
+        return sanitizeResponse(content.toString());
       } else {
         throw Exception('Ollama error: ${response.statusCode}');
       }
@@ -124,7 +126,9 @@ class OllamaService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return sanitizeResponse(data['message']['content'] as String);
+        final content = data['message']?['content'];
+        if (content == null) throw Exception('Ollama returned null content');
+        return sanitizeResponse(content.toString());
       } else {
         throw Exception('Ollama error: ${response.statusCode}');
       }

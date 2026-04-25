@@ -26,6 +26,15 @@ class Flashcard {
   })  : nextReview = nextReview ?? DateTime.now(),
         createdAt = createdAt ?? DateTime.now();
 
+  static DateTime _parseDate(dynamic value) {
+    if (value == null) return DateTime.now();
+    try {
+      return DateTime.parse(value.toString());
+    } catch (_) {
+      return DateTime.now();
+    }
+  }
+
   factory Flashcard.fromJson(Map<String, dynamic> json) {
     return Flashcard(
       id: json['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
@@ -36,12 +45,8 @@ class Flashcard {
       repetitions: json['repetitions'] as int? ?? 0,
       easeFactor: (json['easeFactor'] as num?)?.toDouble() ?? 2.5,
       interval: json['interval'] as int? ?? 0,
-      nextReview: json['nextReview'] != null
-          ? DateTime.parse(json['nextReview'].toString())
-          : DateTime.now(),
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'].toString())
-          : DateTime.now(),
+      nextReview: _parseDate(json['nextReview']),
+      createdAt: _parseDate(json['createdAt']),
     );
   }
 

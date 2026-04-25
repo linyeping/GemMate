@@ -103,4 +103,57 @@ const Map<String, String> ko = {
   'hfLoginDesc': '선택. 제한된 모델을 받을 때만 필요합니다.',
   'login': '로그인',
   'optional': '선택',
+
+  // Home screen
+  'goodMorning': '☀️ 좋은 아침이에요',
+  'goodAfternoon': '👋 좋은 오후예요',
+  'goodEvening': '🌙 좋은 저녁이에요',
+  'readyToStudy': '공부할 준비 됐나요?',
+  'dayStreak': '연속 일수',
+  'totalDays': '총 일수',
+  'today': '오늘',
+  'cards': '카드',
+  'chats': '채팅',
+  'breakTime': '휴식 시간',
+  'focusSession': '집중 세션',
+  'timerRest': '휴식',
+  'timerFocus': '집중',
+  'reset': '리셋',
+  'finishEarly': '일찍 끝내기',
+  'breakTip': '화면에서 벗어나세요. 스트레칭, 호흡, 수분 보충. 🌿',
+  'focusTip': '집중 세션 중에는 스마트폰을 엎어두고 다른 앱을 닫으세요.',
+  'sessionComplete': '🎉 세션 완료!',
+  'takeABreak': '☕ 휴식하기',
+  'keepGoing': '🚀 계속하기',
+  'breakOver': '휴식 끝! 다음 세션 준비됐나요? 💪',
+  'pomodorosDoneToday': '오늘 {count}번째 포모도로 완료.',
+  'streakLabel': '{streak}일 연속 🔥',
+  'sessionsCompletedToday': '오늘 {count}세션 완료',
+
+  // QR Gallery
+  'scanFromGallery': '갤러리에서 스캔',
+  'noQrInImage': '이미지에서 QR 코드를 찾을 수 없습니다',
+
+  // Custom Timer
+  'customTimer': '커스텀 타이머',
+  'workDuration': '집중 시간',
+  'breakDuration': '휴식 시간',
+  'minutesUnit': '분',
+  'apply': '적용',
+
+  // Camera / Math Solver
+  'mathSolver': '수학 풀기',
+  'generalMode': '일반',
+  'solveStepByStep': '단계별 풀이',
+  'stepSolution': '단계별 해답',
+  'saveMathCards': '단계를 카드로 저장',
+
+  // Document Import
+  'importDocument': '문서 가져오기（PDF / Word）',
+
+  // Mind Map
+  'mindMap': '마인드맵',
+  'generatingMindMap': '마인드맵 생성 중...',
+  'mindMapHint': '핀치로 확대  ·  드래그로 이동',
+  'mindMapError': '마인드맵을 생성할 수 없습니다. 다시 시도하세요.',
 };

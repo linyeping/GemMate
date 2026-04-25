@@ -26,14 +26,23 @@ class ChatMessage {
     'imageBase64': imageBase64,
   };
 
+  static DateTime _parseDate(dynamic value) {
+    if (value == null) return DateTime.now();
+    try {
+      return DateTime.parse(value.toString());
+    } catch (_) {
+      return DateTime.now();
+    }
+  }
+
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       content: json['content'],
       isUser: json['isUser'],
-      modelUsed: ModelUsed.values[json['modelUsed'] ?? 2],
-      latencyMs: json['latencyMs'],
-      timestamp: DateTime.parse(json['timestamp']),
-      imageBase64: json['imageBase64'],
+      modelUsed: ModelUsed.values[(json['modelUsed'] as int?)?.clamp(0, ModelUsed.values.length - 1) ?? 2],
+      latencyMs: json['latencyMs'] as int?,
+      timestamp: _parseDate(json['timestamp']),
+      imageBase64: json['imageBase64'] as String?,
     );
   }
 }

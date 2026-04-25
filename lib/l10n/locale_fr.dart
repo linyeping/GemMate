@@ -103,4 +103,57 @@ const Map<String, String> fr = {
   'hfLoginDesc': 'Optionnel. Requis uniquement pour les modèles restreints.',
   'login': 'Se connecter',
   'optional': 'Optionnel',
+
+  // Home screen
+  'goodMorning': '☀️ Bonjour',
+  'goodAfternoon': '👋 Bon après-midi',
+  'goodEvening': '🌙 Bonsoir',
+  'readyToStudy': 'Prêt à étudier ?',
+  'dayStreak': 'Jours consécutifs',
+  'totalDays': 'Total jours',
+  'today': "Aujourd'hui",
+  'cards': 'Cartes',
+  'chats': 'Discussions',
+  'breakTime': 'Pause',
+  'focusSession': 'Session de concentration',
+  'timerRest': 'repos',
+  'timerFocus': 'focus',
+  'reset': 'Réinitialiser',
+  'finishEarly': 'Terminer tôt',
+  'breakTip': 'Éloignez-vous de l\'écran. Étirez-vous, respirez, hydratez-vous. 🌿',
+  'focusTip': 'Pendant la session, retournez votre téléphone et fermez les autres applis.',
+  'sessionComplete': '🎉 Session terminée !',
+  'takeABreak': '☕ Faire une pause',
+  'keepGoing': '🚀 Continuer',
+  'breakOver': 'Pause terminée ! Prêt pour une nouvelle session ? 💪',
+  'pomodorosDoneToday': 'Pomodoro #{count} terminé aujourd\'hui.',
+  'streakLabel': 'Série : {streak} jours 🔥',
+  'sessionsCompletedToday': '{count} sessions terminées aujourd\'hui',
+
+  // QR Gallery
+  'scanFromGallery': 'Scanner depuis la galerie',
+  'noQrInImage': 'Aucun QR code trouvé dans cette image',
+
+  // Custom Timer
+  'customTimer': 'Minuterie personnalisée',
+  'workDuration': 'Durée de travail',
+  'breakDuration': 'Durée de pause',
+  'minutesUnit': 'min',
+  'apply': 'Appliquer',
+
+  // Camera / Math Solver
+  'mathSolver': 'Solveur mathématique',
+  'generalMode': 'Général',
+  'solveStepByStep': 'Résoudre étape par étape',
+  'stepSolution': 'Solution étape par étape',
+  'saveMathCards': 'Enregistrer les étapes en cartes',
+
+  // Document Import
+  'importDocument': 'Importer un document (PDF / Word)',
+
+  // Mind Map
+  'mindMap': 'Carte mentale',
+  'generatingMindMap': 'Génération de la carte mentale...',
+  'mindMapHint': 'Pincez pour zoomer  ·  Faites glisser',
+  'mindMapError': 'Impossible de générer la carte. Réessayez.',
 };

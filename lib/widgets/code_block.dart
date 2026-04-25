@@ -144,6 +144,28 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class CodeBlockBuilder extends MarkdownElementBuilder {
+  // Tell flutter_markdown this builder handles a block-level element.
+  // NOTE: flutter_markdown 0.7.x declares this as a method, not a getter.
+  @override
+  bool isBlockElement() => true;
+
+  // ── KEY FIX ──────────────────────────────────────────────────────────────
+  // flutter_markdown's MarkdownBuilder._addAnonymousBlockIfNeeded() only
+  // calls _inlines.clear() when inline.children.isNotEmpty.  Because we
+  // handle rendering entirely in visitElementAfterWithContext, our visitText
+  // normally returns null — leaving _inlines non-empty at document end, which
+  // triggers the `assert(_inlines.isEmpty)` crash at builder.dart:267.
+  //
+  // Returning SizedBox.shrink() (a non-null, zero-size widget) causes
+  // children to be non-empty → _addAnonymousBlockIfNeeded clears _inlines →
+  // assertion passes.  The zero-size widget is placed in the pre block's
+  // discarded `current.children` list that is never rendered because our
+  // visitElementAfterWithContext returns a non-null widget (which bypasses
+  // defaultChild()).
+  @override
+  Widget? visitText(md.Text text, TextStyle? preferredStyle) =>
+      const SizedBox.shrink();
+
   @override
   Widget? visitElementAfterWithContext(
     BuildContext context,

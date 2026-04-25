@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../models/flashcard.dart';
 import '../stores/flashcard_store.dart';
+import '../stores/locale_store.dart';
 
 class DeckStudyScreen extends StatefulWidget {
   final String groupId;
@@ -13,6 +15,9 @@ class DeckStudyScreen extends StatefulWidget {
 class _DeckStudyScreenState extends State<DeckStudyScreen>
     with SingleTickerProviderStateMixin {
   final FlashcardStore _store = FlashcardStore();
+  final FlutterTts _tts = FlutterTts();
+  bool _isSpeaking = false;
+
   late List<Flashcard> _cards;
   int _currentIndex = 0;
   bool _showingFront = true;
@@ -23,6 +28,7 @@ class _DeckStudyScreenState extends State<DeckStudyScreen>
   void initState() {
     super.initState();
     _cards = _store.getCardsInGroup(widget.groupId);
+    _initTts();
     _flipController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
@@ -32,13 +38,45 @@ class _DeckStudyScreenState extends State<DeckStudyScreen>
     );
   }
 
+  Future<void> _initTts() async {
+    // Map app locale to a TTS language code
+    final lang = LocaleStore().languageCode;
+    final ttsLang = const {
+      'zh': 'zh-CN',
+      'ja': 'ja-JP',
+      'ko': 'ko-KR',
+      'fr': 'fr-FR',
+      'es': 'es-ES',
+    }[lang] ?? 'en-US';
+
+    await _tts.setLanguage(ttsLang);
+    await _tts.setSpeechRate(0.45);
+    await _tts.setVolume(1.0);
+    _tts.setCompletionHandler(() {
+      if (mounted) setState(() => _isSpeaking = false);
+    });
+  }
+
+  Future<void> _speak(String text) async {
+    if (_isSpeaking) {
+      await _tts.stop();
+      setState(() => _isSpeaking = false);
+      return;
+    }
+    setState(() => _isSpeaking = true);
+    await _tts.speak(text);
+  }
+
   @override
   void dispose() {
+    _tts.stop();
     _flipController.dispose();
     super.dispose();
   }
 
   void _flipCard() {
+    _tts.stop();
+    setState(() => _isSpeaking = false);
     if (_showingFront) {
       _flipController.forward();
     } else {
@@ -49,9 +87,12 @@ class _DeckStudyScreenState extends State<DeckStudyScreen>
 
   void _nextCard() {
     if (_currentIndex < _cards.length - 1) {
+      _tts.stop();
+      _flipController.stop();
       setState(() {
         _currentIndex++;
         _showingFront = true;
+        _isSpeaking = false;
         _flipController.reset();
       });
     }
@@ -59,9 +100,12 @@ class _DeckStudyScreenState extends State<DeckStudyScreen>
 
   void _prevCard() {
     if (_currentIndex > 0) {
+      _tts.stop();
+      _flipController.stop();
       setState(() {
         _currentIndex--;
         _showingFront = true;
+        _isSpeaking = false;
         _flipController.reset();
       });
     }
@@ -118,6 +162,18 @@ class _DeckStudyScreenState extends State<DeckStudyScreen>
         title: Text(groupName),
         centerTitle: true,
         actions: [
+          // TTS speak button
+          IconButton(
+            tooltip: _isSpeaking ? 'Stop' : 'Read aloud',
+            icon: Icon(
+              _isSpeaking ? Icons.stop_circle_outlined : Icons.volume_up_outlined,
+              color: _isSpeaking ? const Color(0xFF06D6A0) : null,
+            ),
+            onPressed: () {
+              final card = _cards[_currentIndex];
+              _speak(_showingFront ? card.front : card.back);
+            },
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16),

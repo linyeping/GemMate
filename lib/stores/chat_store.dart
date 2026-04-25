@@ -48,8 +48,11 @@ class ChatStore extends ChangeNotifier {
   }
 
   void switchToSession(String id) {
-    _activeSession = _sessions.firstWhere((s) => s.id == id);
-    notifyListeners();
+    final session = _sessions.where((s) => s.id == id).firstOrNull;
+    if (session != null) {
+      _activeSession = session;
+      notifyListeners();
+    }
   }
 
   void renameSession(String id, String newTitle) {
@@ -111,10 +114,16 @@ class ChatStore extends ChangeNotifier {
 
     try {
       final response = await _router.route(_activeSession!.messages, text);
+      final conn = ConnectionStore();
+      final modelUsed = conn.isLaptopConnected
+          ? ModelUsed.remoteE2B
+          : conn.isLocalModelAvailable
+              ? ModelUsed.localE2B
+              : ModelUsed.none;
       final aiMsg = ChatMessage(
         content: response,
         isUser: false,
-        modelUsed: ConnectionStore().isConnected ? ModelUsed.remoteE2B : ModelUsed.none,
+        modelUsed: modelUsed,
       );
       addMessage(aiMsg);
     } catch (e) {

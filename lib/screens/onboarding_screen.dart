@@ -108,8 +108,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     setState(() => _downloadStatus = ModelDownloadStatus.downloading);
     try {
       final result = await FilePicker.platform.pickFiles(type: FileType.any);
-      if (result != null && result.files.single.path != null) {
-        final pickedPath = result.files.single.path!;
+      final pickedPath = result?.files.isNotEmpty == true ? result!.files.first.path : null;
+      if (pickedPath != null) {
         
         final appDir = await getApplicationDocumentsDirectory();
         final internalPath = '${appDir.path}/gemma-4-E2B-it.litertlm';

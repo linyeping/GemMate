@@ -103,4 +103,57 @@ const Map<String, String> zh = {
   'hfLoginDesc': '可选。仅下载受保护模型时需要。',
   'login': '登录',
   'optional': '可选',
+
+  // Home screen
+  'goodMorning': '☀️ 早上好',
+  'goodAfternoon': '👋 下午好',
+  'goodEvening': '🌙 晚上好',
+  'readyToStudy': '准备好学习了吗？',
+  'dayStreak': '连续天数',
+  'totalDays': '总天数',
+  'today': '今日',
+  'cards': '卡片',
+  'chats': '对话',
+  'breakTime': '休息时间',
+  'focusSession': '专注时间',
+  'timerRest': '休息',
+  'timerFocus': '专注',
+  'reset': '重置',
+  'finishEarly': '提前完成',
+  'breakTip': '离开屏幕，伸展身体，深呼吸，补充水分。🌿',
+  'focusTip': '专注时间内，请将手机翻转扣放，关闭其他应用。',
+  'sessionComplete': '🎉 专注完成！',
+  'takeABreak': '☕ 去休息',
+  'keepGoing': '🚀 继续加油',
+  'breakOver': '休息结束！准备好下一个专注了吗？💪',
+  'pomodorosDoneToday': '今天已完成第 {count} 个番茄时钟。',
+  'streakLabel': '连续 {streak} 天 🔥',
+  'sessionsCompletedToday': '今日已完成 {count} 个专注',
+
+  // QR Gallery
+  'scanFromGallery': '从相册扫描',
+  'noQrInImage': '图片中未找到二维码',
+
+  // Custom Timer
+  'customTimer': '自定义计时',
+  'workDuration': '专注时长',
+  'breakDuration': '休息时长',
+  'minutesUnit': '分钟',
+  'apply': '应用',
+
+  // Camera / Math Solver
+  'mathSolver': '数学解题',
+  'generalMode': '通用',
+  'solveStepByStep': '一步一步解答',
+  'stepSolution': '解题步骤',
+  'saveMathCards': '保存步骤为闪卡',
+
+  // Document Import
+  'importDocument': '导入文档（PDF / Word）',
+
+  // Mind Map
+  'mindMap': '思维导图',
+  'generatingMindMap': '正在生成思维导图...',
+  'mindMapHint': '双指缩放  ·  拖动平移',
+  'mindMapError': '无法生成思维导图，请重试。',
 };

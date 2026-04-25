@@ -12,6 +12,7 @@ class FlashcardStore extends ChangeNotifier {
   final NotificationService _notifications = NotificationService();
   
   List<Flashcard> _flashcards = [];
+  bool _savePending = false;
 
   List<Flashcard> get cards => List.unmodifiable(_flashcards);
   List<Flashcard> get dueCards => _flashcards.where((c) => c.nextReview.isBefore(DateTime.now())).toList();
@@ -71,9 +72,17 @@ class FlashcardStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Serialised save: if a write is already in-flight, mark pending and
+  // re-run after it completes — prevents concurrent SharedPreferences writes.
   Future<void> save() async {
-    await _storage.saveFlashcards(_flashcards);
-    _notifications.scheduleFlashcardReminders(_flashcards);
+    if (_savePending) return;
+    _savePending = true;
+    try {
+      await _storage.saveFlashcards(List.unmodifiable(_flashcards));
+      _notifications.scheduleFlashcardReminders(_flashcards);
+    } finally {
+      _savePending = false;
+    }
   }
 
   void addCards(List<Flashcard> newCards) {

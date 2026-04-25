@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/home_screen.dart';
 import '../screens/chat_screen.dart';
 import '../screens/flashcard_screen.dart';
 import '../screens/settings_screen.dart';
@@ -41,6 +42,7 @@ class _AppRouterState extends State<AppRouter> {
       body: IndexedStack(
         index: _currentIndex,
         children: const [
+          HomeScreen(),
           ChatScreen(),
           FlashcardScreen(),
           SettingsScreen(),
@@ -52,8 +54,13 @@ class _AppRouterState extends State<AppRouter> {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        indicatorColor: const Color(0xFF4361EE).withOpacity(0.12),
+        indicatorColor: const Color(0xFF4361EE).withValues(alpha: 0.12),
         destinations: [
+          const NavigationDestination(
+            icon: Icon(Icons.home_outlined, size: 22),
+            selectedIcon: Icon(Icons.home, size: 22, color: Color(0xFF4361EE)),
+            label: 'Home',
+          ),
           NavigationDestination(
             icon: const Icon(Icons.chat_bubble_outline, size: 22),
             selectedIcon: const Icon(Icons.chat_bubble, size: 22, color: Color(0xFF4361EE)),

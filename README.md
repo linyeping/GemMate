@@ -20,6 +20,7 @@
   <a href="#license">License</a>
 </p>
 <p align="center">
+  <img src="https://img.shields.io/badge/version-1.3.0-brightgreen?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Gemma_4-E2B-4361EE?style=for-the-badge&logo=google&logoColor=white" />
   <img src="https://img.shields.io/badge/Flutter-3.41-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
   <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" />
@@ -93,6 +94,21 @@ Full UI localization and AI responses in: English, 简体中文, 日本語, 한�
 Spaced repetition reminders, daily study prompts, and inactivity nudges keep you on track.
 
 <p align="center">   <img src="assets/Notifications.jpg" width="350" alt="Chat Demo"/> </p>
+
+### 🗺️ AI Mind Map Generator
+One tap generates a visual, color-coded mind map from your conversation — rendered with bezier curves and an interactive pan/zoom canvas. Perfect for organizing complex topics before an exam.
+
+### 📄 Document Import (PDF + DOCX)
+Import PDF and Word (.docx) files directly into chat. GemMate extracts the text and feeds it to the AI, so you can ask questions, generate flashcards, or get a summary from any document — no cloud upload needed.
+
+### 📷 Camera Math Solver
+Switch the camera screen to **Math Solver** mode to photograph handwritten equations or printed problems. The AI solves them step-by-step, and each step can be saved as a flashcard for drill practice.
+
+### 🔲 QR Code Sharing & Gallery Scan
+Share flashcard decks with classmates via a generated QR code, or scan a QR from your gallery image — no need to point the camera at a screen.
+
+### 🍅 Custom Pomodoro Timer
+Set your own focus and break durations (1–120 min / 1–60 min) directly from the home screen. Type the number or tap +/−. Sessions are tracked daily and stored locally.
 
 ### 🎨 Neomorphic Design
 Beautiful neomorphic UI with dark/light mode, customizable accent colors, and adjustable font sizes.
@@ -212,13 +228,16 @@ adb push gemma-4-E2B-it.litertlm /sdcard/Download/
 
 | Component | Technology |
 |-----------|-----------|
-| **AI Model** | Gemma 4 E2B /Gemma 4 E4B |
+| **AI Model** | Gemma 4 E2B / Gemma 4 E4B |
 | **On-Device Runtime** | LiteRT-LM via flutter_gemma |
 | **Local Server** | Ollama (laptop, GPU-accelerated) |
 | **App Framework** | Flutter 3.41 / Dart |
 | **Study Algorithm** | SM-2 Spaced Repetition |
 | **Voice Input** | speech_to_text |
-| **OCR / Vision** | Gemma 4 multimodal (via Ollama) |
+| **OCR / Vision** | ML Kit (offline) + Gemma 4 multimodal (Ollama) |
+| **QR Code** | mobile_scanner 5.x |
+| **Document Import** | pdfx + archive (DOCX ZIP/XML parsing) |
+| **Mind Map** | CustomPainter + InteractiveViewer |
 | **Notifications** | flutter_local_notifications |
 | **Storage** | SharedPreferences + JSON |
 | **UI Design** | Custom Neomorphic widgets |
@@ -254,14 +273,18 @@ lib/
 │   ├── quiz_question.dart             # Quiz question model
 │   └── study_plan.dart                # Spaced repetition schedule model
 ├── screens/
-│   ├── capture_screen.dart            # Camera / OCR feature
+│   ├── capture_screen.dart            # Camera / OCR + Math Solver mode
 │   ├── chat_history_screen.dart       # Chat session management
-│   ├── chat_screen.dart               # Main chat UI + voice input
+│   ├── chat_screen.dart               # Main chat UI + voice + mind map + doc import
 │   ├── deck_study_screen.dart         # Card flip study session
+│   ├── exam_history_screen.dart       # Past exam records
+│   ├── exam_screen.dart               # Timed exam mode
 │   ├── flashcard_screen.dart          # Deck gallery with fan piles
-│   ├── home_screen.dart               # Main dashboard
+│   ├── home_screen.dart               # Dashboard + custom Pomodoro timer
+│   ├── mind_map_screen.dart           # AI-generated interactive mind map
 │   ├── onboarding_screen.dart         # First-launch setup + model download
-│   ├── paper_screen.dart              # Document/exam paper analysis
+│   ├── qr_scan_screen.dart            # QR scan (camera + gallery)
+│   ├── qr_share_screen.dart           # QR code sharing for decks
 │   ├── quiz_screen.dart               # Interactive quiz UI
 │   ├── review_screen.dart             # Scheduled review dashboard
 │   └── settings_screen.dart           # Settings with sub-pages
@@ -271,9 +294,11 @@ lib/
 │   ├── model_download_service.dart    # Model download + mirror support
 │   ├── notification_service.dart      # Study reminders
 │   ├── ollama_service.dart            # HTTP client for Ollama API
+│   ├── pdf_service.dart               # PDF + DOCX import and text extraction
 │   ├── quiz_generator.dart            # AI-powered quiz generation
-│   ├── smart_router.dart              # Smart model selection logic
+│   ├── smart_router.dart              # Smart model selection + system overrides
 │   ├── storage_service.dart           # Local file/DB storage operations
+│   ├── streak_service.dart            # Daily streak + Pomodoro counter
 │   └── study_tools.dart               # Core study algorithms (SM-2, etc.)
 ├── stores/
 │   ├── chat_store.dart                # Chat session persistence

@@ -12,16 +12,20 @@ import '../services/flashcard_generator.dart';
 import '../services/quiz_generator.dart';
 import '../services/local_gemma_service.dart';
 import '../services/storage_service.dart';
+import '../services/pdf_service.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/quick_action_chips.dart';
 import '../widgets/connection_indicator.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/neumorphic_button.dart';
+import 'dart:convert';
 import 'chat_history_screen.dart';
 import 'quiz_screen.dart';
 import 'capture_screen.dart';
+import 'mind_map_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../core/constants.dart';
+import '../services/streak_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -45,6 +49,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   
   bool _isLoading = false;
+
+  // PDF context — set when user imports a PDF; cleared after next send
+  PdfExtractResult? _pdfContext;
 
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
@@ -290,16 +297,30 @@ class _ChatScreenState extends State<ChatScreen> {
     final msgText = text ?? _textController.text;
     if (msgText.trim().isEmpty && imageBase64 == null) return;
 
+    // If a PDF has been loaded, prepend its context to the actual query.
+    // The user-visible message shows the question only; the model receives
+    // the full PDF snippet + question.
+    final pdfSnippet = _pdfContext;
+    final modelQuery = pdfSnippet != null
+        ? '${PdfService.buildContext(pdfSnippet, isRemote: _connectionStore.isLaptopConnected)}'
+          '\n\nUser question: $msgText'
+        : msgText;
+
     final userMsg = ChatMessage(
-      content: msgText,
+      content: pdfSnippet != null
+          ? '📄 [${pdfSnippet.fileName}]\n$msgText'
+          : msgText,
       isUser: true,
       imageBase64: imageBase64,
     );
-    
+
+    // Consume PDF context after one send
+    if (pdfSnippet != null) setState(() => _pdfContext = null);
+
     _chatStore.addMessage(userMsg);
     _chatStore.updateLastTopic(msgText);
     _textController.clear();
-    
+
     setState(() => _isLoading = true);
     final stopwatch = Stopwatch()..start();
 
@@ -308,7 +329,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (imageBase64 != null) {
         response = await _router.ollama.chatWithImage(imageBase64, msgText);
       } else {
-        response = await _router.route(_chatStore.activeMessages, msgText);
+        response = await _router.route(_chatStore.activeMessages, modelQuery);
       }
       
       stopwatch.stop();
@@ -316,12 +337,17 @@ class _ChatScreenState extends State<ChatScreen> {
       final aiMsg = ChatMessage(
         content: response,
         isUser: false,
-        modelUsed: _connectionStore.isConnected ? ModelUsed.remoteE2B : ModelUsed.none,
+        modelUsed: _connectionStore.isLaptopConnected
+            ? ModelUsed.remoteE2B
+            : _connectionStore.isLocalModelAvailable
+                ? ModelUsed.localE2B
+                : ModelUsed.none,
         latencyMs: stopwatch.elapsedMilliseconds,
       );
       
       _chatStore.addMessage(aiMsg);
       await _storage.saveLastActive();
+      StreakService().recordStudy(); // fire-and-forget
     } catch (e) {
       _chatStore.addMessage(ChatMessage(
         content: '❌ Error: ${e.toString()}',
@@ -329,6 +355,35 @@ class _ChatScreenState extends State<ChatScreen> {
       ));
     } finally {
       if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _handlePdfImport() async {
+    try {
+      final result = await PdfService.pickAndExtract();
+      if (result == null) return; // user cancelled
+
+      setState(() => _pdfContext = result);
+
+      // Show a snack with a brief summary + prompt hint
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 5),
+            content: Text(
+              '📄 "${result.fileName}" loaded '
+              '(${result.extractedPages}/${result.totalPages} pages). '
+              'Now type your question about this PDF.',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('PDF error: $e')),
+        );
+      }
     }
   }
 
@@ -354,6 +409,175 @@ class _ChatScreenState extends State<ChatScreen> {
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _handleSummary(AppLocalizations l10n) async {
+    final messages = _chatStore.activeMessages;
+    if (messages.isEmpty) return;
+
+    final lang = _localeStore.languageCode;
+
+    // Build a transcript of up to 30 messages, truncating long ones so we
+    // don't overflow the local model's context window (~2 k tokens).
+    final transcript = messages
+        .where((m) => m.content.isNotEmpty)
+        .take(30)
+        .map((m) {
+          final role = m.isUser ? (lang == 'zh' ? '我' : 'User') : 'AI';
+          final body = m.content.length > 500
+              ? '${m.content.substring(0, 500)}…'
+              : m.content;
+          return '$role: $body';
+        })
+        .join('\n\n');
+
+    final instruction = switch (lang) {
+      'zh' => '以下是对话内容，请直接输出3-5个要点总结，每行前面加 • 符号，不要输出任何其他内容：',
+      'ja' => '以下の会話を読み、3〜5つの要点を • で始めてまとめてください。余計な説明は不要です：',
+      'ko' => '다음 대화를 읽고 3-5개의 핵심 요점을 • 로 시작하여 요약해 주세요. 다른 내용은 출력하지 마세요：',
+      'fr' => 'Lisez la conversation ci-dessous et résumez-la en 3 à 5 points clés, chacun commençant par •. Rien d\'autre :',
+      'es' => 'Lee la conversación y resume en 3-5 puntos clave, cada uno comenzando con •. Solo los puntos:',
+      _    => 'Read the conversation below and output ONLY 3-5 bullet points (each starting with •) that summarize the key topics. No preamble:',
+    };
+
+    final fullPrompt = '$instruction\n\n$transcript';
+
+    // Show the user a placeholder message immediately so the UI feels responsive
+    final userVisibleText = switch (lang) {
+      'zh' => '📋 请总结我们的对话',
+      'ja' => '📋 会話を要約してください',
+      'ko' => '📋 대화 요약해주세요',
+      'fr' => '📋 Résumez notre conversation',
+      'es' => '📋 Resume nuestra conversación',
+      _    => '📋 Summarize our conversation',
+    };
+
+    // Add user-visible message manually (doesn't go to model)
+    _chatStore.addMessage(ChatMessage(content: userVisibleText, isUser: true));
+    setState(() => _isLoading = true);
+    final stopwatch = Stopwatch()..start();
+
+    try {
+      // Route with the full transcript embedded — local model gets everything
+      final response = await _router.route([], fullPrompt);
+      stopwatch.stop();
+      _chatStore.addMessage(ChatMessage(
+        content: response,
+        isUser: false,
+        modelUsed: _connectionStore.isLaptopConnected
+            ? ModelUsed.remoteE2B
+            : _connectionStore.isLocalModelAvailable
+                ? ModelUsed.localE2B
+                : ModelUsed.none,
+        latencyMs: stopwatch.elapsedMilliseconds,
+      ));
+    } catch (e) {
+      _chatStore.addMessage(ChatMessage(
+        content: '❌ Error: ${e.toString()}',
+        isUser: false,
+      ));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  // ── Mind map ────────────────────────────────────────────────────────────────
+
+  Future<void> _handleMindMap(AppLocalizations l10n) async {
+    final messages = _chatStore.activeMessages;
+    if (messages.isEmpty) return;
+
+    final transcript = messages
+        .where((m) => m.content.isNotEmpty)
+        .take(20)
+        .map((m) {
+          final role = m.isUser ? 'User' : 'AI';
+          final body = m.content.length > 300
+              ? '${m.content.substring(0, 300)}…'
+              : m.content;
+          return '$role: $body';
+        })
+        .join('\n\n');
+
+    // The system override tells the local model to wrap output in a ```json
+    // code fence. sanitizeResponse() leaves fenced blocks untouched (it only
+    // strips curly braces from prose), so the JSON survives sanitisation intact.
+    const systemOverride =
+        'You are a JSON generator. Output ONLY a single JSON code block '
+        'wrapped in triple-backtick json fences (```json ... ```). '
+        'No text before or after the code block. '
+        'The JSON must have a "topic" string and a "children" array. '
+        'Each child has a "label" string and its own "children" array. '
+        '3-6 main branches, 2-4 items per branch, labels under 5 words.';
+
+    final fullPrompt =
+        'Generate a mind map JSON that captures the key topics from the '
+        'conversation below.\n\nConversation:\n$transcript';
+
+    setState(() => _isLoading = true);
+    String? rawResponse;
+    try {
+      rawResponse = await _router.route(
+        [],
+        fullPrompt,
+        systemPromptOverride: systemOverride,
+      );
+      debugPrint('[MindMap] raw response:\n$rawResponse');
+      final jsonStr = _extractJsonObject(rawResponse);
+      if (jsonStr == null) {
+        throw Exception('No JSON object found in response');
+      }
+      final data = jsonDecode(jsonStr) as Map<String, dynamic>;
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => MindMapScreen(data: data)),
+        );
+      }
+    } catch (e) {
+      debugPrint('[MindMap] error: $e\nraw: $rawResponse');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.mindMapError),
+            action: SnackBarAction(
+              label: l10n.retry,
+              onPressed: () => _handleMindMap(l10n),
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  /// Extracts the first complete JSON object from [text].
+  ///
+  /// Handles two formats:
+  ///  1. JSON wrapped in a ```json … ``` code fence (preferred — survives
+  ///     sanitiseResponse which strips bare curly braces from prose).
+  ///  2. Raw JSON anywhere in the text (brace-depth counting fallback).
+  String? _extractJsonObject(String text) {
+    // ── 1. Try code-fence unwrap first ──────────────────────────────────────
+    final fenceMatch =
+        RegExp(r'```(?:json)?\s*([\s\S]*?)\s*```').firstMatch(text);
+    final working = fenceMatch != null ? (fenceMatch.group(1) ?? text) : text;
+
+    // ── 2. Brace-depth counting ──────────────────────────────────────────────
+    int depth = 0;
+    int start = -1;
+    for (int i = 0; i < working.length; i++) {
+      final c = working[i];
+      if (c == '{') {
+        if (depth == 0) start = i;
+        depth++;
+      } else if (c == '}') {
+        depth--;
+        if (depth == 0 && start != -1) return working.substring(start, i + 1);
+      }
+    }
+    return null;
   }
 
   Future<void> _handleQuiz(AppLocalizations l10n) async {
@@ -442,6 +666,8 @@ class _ChatScreenState extends State<ChatScreen> {
             isLoading: _isLoading,
             onFlashcards: () => _handleFlashcards(l10n),
             onQuiz: () => _handleQuiz(l10n),
+            onSummary: () => _handleSummary(l10n),
+            onMindMap: () => _handleMindMap(l10n),
             onPlan: () => _sendMessage(text: l10n.promptPlan),
             onTranslate: () => _sendMessage(text: l10n.promptTranslate),
             onCamera: () => Navigator.push(
@@ -455,21 +681,84 @@ class _ChatScreenState extends State<ChatScreen> {
               color: theme.scaffoldBackgroundColor,
               border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.15))),
             ),
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                // PDF active banner
+                if (_pdfContext != null)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4361EE).withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: const Color(0xFF4361EE).withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.picture_as_pdf,
+                            size: 16, color: Color(0xFF4361EE)),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            '📄 ${_pdfContext!.fileName} ready — type your question',
+                            style: const TextStyle(
+                                fontSize: 12, color: Color(0xFF4361EE)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => setState(() => _pdfContext = null),
+                          child: const Icon(Icons.close,
+                              size: 16, color: Color(0xFF4361EE)),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                Row(
+              children: [
+                // PDF import button
+                Tooltip(
+                  message: l10n.importDocument,
+                  child: GestureDetector(
+                    onTap: _isLoading ? null : _handlePdfImport,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _pdfContext != null
+                            ? const Color(0xFF4361EE)
+                            : Colors.transparent,
+                      ),
+                      child: Icon(
+                        Icons.picture_as_pdf_outlined,
+                        size: 20,
+                        color: _pdfContext != null
+                            ? Colors.white
+                            : Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
                 GestureDetector(
                   onTap: _toggleVoiceInput,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    width: 40,
-                    height: 40,
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _isListening ? const Color(0xFF06D6A0) : Colors.transparent,
                     ),
                     child: Icon(
                       _isListening ? Icons.mic : Icons.mic_none,
-                      size: 22,
+                      size: 20,
                       color: _isListening ? Colors.white : Colors.grey,
                     ),
                   ),
@@ -486,7 +775,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       controller: _textController,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: _isListening ? '🎤 Listening...' : 'Message GemMate...',
+                        hintText: _isListening
+                            ? '🎤 Listening...'
+                            : _pdfContext != null
+                                ? 'Ask about the PDF…'
+                                : 'Message GemMate...',
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       ),
@@ -500,15 +793,17 @@ class _ChatScreenState extends State<ChatScreen> {
                     width: 36, height: 36,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _textController.text.trim().isNotEmpty 
-                          ? const Color(0xFF4361EE) 
+                      color: _textController.text.trim().isNotEmpty
+                          ? const Color(0xFF4361EE)
                           : Colors.grey.withValues(alpha: 0.3),
                     ),
                     child: const Icon(Icons.arrow_upward, size: 20, color: Colors.white),
                   ),
                 ),
               ],
-            ),
+            ), // Row
+              ], // Column children
+            ), // Column
           ),
         ],
       ),

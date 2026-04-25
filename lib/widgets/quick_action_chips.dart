@@ -8,6 +8,8 @@ class QuickActionChips extends StatelessWidget {
   final VoidCallback onPlan;
   final VoidCallback onTranslate;
   final VoidCallback onCamera;
+  final VoidCallback onSummary;
+  final VoidCallback onMindMap;
   final bool isLoading;
 
   const QuickActionChips({
@@ -17,6 +19,8 @@ class QuickActionChips extends StatelessWidget {
     required this.onPlan,
     required this.onTranslate,
     required this.onCamera,
+    required this.onSummary,
+    required this.onMindMap,
     this.isLoading = false,
   });
 
@@ -53,6 +57,16 @@ class QuickActionChips extends StatelessWidget {
             label: '📷 ${l10n.camera}',
             accentColor: const Color(0xFFFFBE0B), // warningAmber
             onTap: isLoading ? null : onCamera,
+          ),
+          _NeumorphicChip(
+            label: '📋 ${l10n.summarize}',
+            accentColor: const Color(0xFF06D6A0),
+            onTap: isLoading ? null : onSummary,
+          ),
+          _NeumorphicChip(
+            label: '🗺 ${l10n.mindMap}',
+            accentColor: const Color(0xFFEF476F),
+            onTap: isLoading ? null : onMindMap,
           ),
         ],
       ),

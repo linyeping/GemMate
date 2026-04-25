@@ -3,6 +3,8 @@ import '../models/quiz_question.dart';
 import '../models/flashcard.dart';
 import '../stores/flashcard_store.dart';
 import '../widgets/quiz_option_tile.dart';
+import 'exam_screen.dart';
+import 'exam_history_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final List<QuizQuestion> questions;
@@ -23,6 +25,16 @@ class _QuizScreenState extends State<QuizScreen> {
   bool _isAnswered = false;
   int _score = 0;
   bool _isFinished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Reset any previous selectedIndex so the quiz starts fresh
+    // even if the same question objects are reused across navigations.
+    for (final q in widget.questions) {
+      q.selectedIndex = null;
+    }
+  }
 
   void _handleOptionTap(int index) {
     if (_isAnswered) return;
@@ -53,6 +65,13 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    if (widget.questions.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Quiz')),
+        body: const Center(child: Text('No questions generated. Please try again.')),
+      );
+    }
+
     if (_isFinished) {
       return _buildResults(theme);
     }
@@ -72,7 +91,7 @@ class _QuizScreenState extends State<QuizScreen> {
               elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: theme.colorScheme.primary.withOpacity(0.5), width: 2),
+                side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.5), width: 2),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
@@ -98,7 +117,7 @@ class _QuizScreenState extends State<QuizScreen> {
             if (_isAnswered) ...[
               const SizedBox(height: 24),
               Card(
-                color: theme.colorScheme.secondaryContainer.withOpacity(0.5),
+                color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.5),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -138,7 +157,8 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _buildResults(ThemeData theme) {
-    final percentage = (_score / widget.questions.length);
+    final total = widget.questions.length;
+    final percentage = total > 0 ? (_score / total) : 0.0;
     Color resultColor = Colors.red;
     String message = '📚 Keep studying!';
     
@@ -151,7 +171,20 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz Results'), automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Text('Quiz Results'),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bar_chart_rounded),
+            tooltip: 'Exam History',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ExamHistoryScreen()),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
@@ -175,11 +208,11 @@ class _QuizScreenState extends State<QuizScreen> {
                       value: percentage,
                       strokeWidth: 12,
                       color: resultColor,
-                      backgroundColor: resultColor.withOpacity(0.1),
+                      backgroundColor: resultColor.withValues(alpha: 0.1),
                     ),
                   ),
                   Text(
-                    '${(_score / widget.questions.length * 100).toInt()}%',
+                    '${(percentage * 100).toInt()}%',
                     style: theme.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -195,6 +228,21 @@ class _QuizScreenState extends State<QuizScreen> {
             FilledButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Back to Chat'),
+            ),
+            const SizedBox(height: 12),
+            // ── Exam Mode entry ──────────────────────────────────────────
+            OutlinedButton.icon(
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ExamScreen(
+                    questions: widget.questions,
+                    topic: widget.topic,
+                  ),
+                ),
+              ),
+              icon: const Icon(Icons.timer_outlined),
+              label: const Text('⏱  Exam Mode  (timed)'),
             ),
             const SizedBox(height: 12),
             if (_score < widget.questions.length)

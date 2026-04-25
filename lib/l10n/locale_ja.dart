@@ -103,4 +103,57 @@ const Map<String, String> ja = {
   'hfLoginDesc': '任意。保護されたモデルの場合のみ必要です。',
   'login': 'ログイン',
   'optional': '任意',
+
+  // Home screen
+  'goodMorning': '☀️ おはようございます',
+  'goodAfternoon': '👋 こんにちは',
+  'goodEvening': '🌙 こんばんは',
+  'readyToStudy': '勉強の準備はできましたか？',
+  'dayStreak': '連続日数',
+  'totalDays': '総日数',
+  'today': '今日',
+  'cards': 'カード',
+  'chats': 'チャット',
+  'breakTime': '休憩中',
+  'focusSession': '集中セッション',
+  'timerRest': '休憩',
+  'timerFocus': '集中',
+  'reset': 'リセット',
+  'finishEarly': '早期終了',
+  'breakTip': '画面から離れましょう。ストレッチ、深呼吸、水分補給を。🌿',
+  'focusTip': '集中セッション中は、スマホを伏せ、他のアプリを閉じましょう。',
+  'sessionComplete': '🎉 セッション完了！',
+  'takeABreak': '☕ 休憩する',
+  'keepGoing': '🚀 続ける',
+  'breakOver': '休憩終了！次のセッションの準備はいいですか？💪',
+  'pomodorosDoneToday': '今日 {count} 個目のポモドーロ完了。',
+  'streakLabel': '{streak} 日連続 🔥',
+  'sessionsCompletedToday': '今日 {count} セッション完了',
+
+  // QR Gallery
+  'scanFromGallery': 'ギャラリーからスキャン',
+  'noQrInImage': '画像にQRコードが見つかりません',
+
+  // Custom Timer
+  'customTimer': 'カスタムタイマー',
+  'workDuration': '集中時間',
+  'breakDuration': '休憩時間',
+  'minutesUnit': '分',
+  'apply': '適用',
+
+  // Camera / Math Solver
+  'mathSolver': '数学解答',
+  'generalMode': '通常',
+  'solveStepByStep': 'ステップごとに解く',
+  'stepSolution': '解答ステップ',
+  'saveMathCards': 'ステップをカードに保存',
+
+  // Document Import
+  'importDocument': 'ドキュメントを読み込む（PDF / Word）',
+
+  // Mind Map
+  'mindMap': 'マインドマップ',
+  'generatingMindMap': 'マインドマップ生成中...',
+  'mindMapHint': 'ピンチでズーム  ·  ドラッグで移動',
+  'mindMapError': 'マインドマップを生成できませんでした。もう一度試してください。',
 };

@@ -103,4 +103,57 @@ const Map<String, String> es = {
   'hfLoginDesc': 'Opcional. Solo necesario para modelos restringidos.',
   'login': 'Iniciar sesión',
   'optional': 'Opcional',
+
+  // Home screen
+  'goodMorning': '☀️ Buenos días',
+  'goodAfternoon': '👋 Buenas tardes',
+  'goodEvening': '🌙 Buenas noches',
+  'readyToStudy': '¿Listo para estudiar?',
+  'dayStreak': 'Días seguidos',
+  'totalDays': 'Total días',
+  'today': 'Hoy',
+  'cards': 'Tarjetas',
+  'chats': 'Chats',
+  'breakTime': 'Descanso',
+  'focusSession': 'Sesión de enfoque',
+  'timerRest': 'descanso',
+  'timerFocus': 'enfoque',
+  'reset': 'Reiniciar',
+  'finishEarly': 'Terminar antes',
+  'breakTip': 'Aléjate de la pantalla. Estírate, respira, hidratate. 🌿',
+  'focusTip': 'Durante la sesión, pon el teléfono boca abajo y cierra otras apps.',
+  'sessionComplete': '🎉 ¡Sesión completada!',
+  'takeABreak': '☕ Tomar un descanso',
+  'keepGoing': '🚀 Seguir adelante',
+  'breakOver': '¡Descanso terminado! ¿Listo para otra sesión? 💪',
+  'pomodorosDoneToday': 'Pomodoro #{count} completado hoy.',
+  'streakLabel': 'Racha: {streak} días 🔥',
+  'sessionsCompletedToday': '{count} sesiones completadas hoy',
+
+  // QR Gallery
+  'scanFromGallery': 'Escanear desde galería',
+  'noQrInImage': 'No se encontró código QR en esta imagen',
+
+  // Custom Timer
+  'customTimer': 'Temporizador personalizado',
+  'workDuration': 'Duración de trabajo',
+  'breakDuration': 'Duración de descanso',
+  'minutesUnit': 'min',
+  'apply': 'Aplicar',
+
+  // Camera / Math Solver
+  'mathSolver': 'Solucionador matemático',
+  'generalMode': 'General',
+  'solveStepByStep': 'Resolver paso a paso',
+  'stepSolution': 'Solución paso a paso',
+  'saveMathCards': 'Guardar pasos como tarjetas',
+
+  // Document Import
+  'importDocument': 'Importar documento (PDF / Word)',
+
+  // Mind Map
+  'mindMap': 'Mapa mental',
+  'generatingMindMap': 'Generando mapa mental...',
+  'mindMapHint': 'Pellizca para zoom  ·  Arrastra para mover',
+  'mindMapError': 'No se pudo generar el mapa. Inténtalo de nuevo.',
 };

@@ -95,22 +95,22 @@ List<Map<String, dynamic>> robustJsonParse(String response) {
   try {
     final decoded = jsonDecode(text);
     if (decoded is List) {
-      return decoded.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+      return decoded.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
     }
     if (decoded is Map) {
       return [Map<String, dynamic>.from(decoded)];
     }
   } catch (_) {}
-  
+
   // Try 2: Wrap in array brackets
   try {
     final wrapped = '[$text]';
     final decoded = jsonDecode(wrapped);
     if (decoded is List) {
-      return decoded.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+      return decoded.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
     }
   } catch (_) {}
-  
+
   // Try 3: Fix common issues — trailing commas, missing commas
   try {
     String fixed = text;
@@ -125,7 +125,7 @@ List<Map<String, dynamic>> robustJsonParse(String response) {
     }
     final decoded = jsonDecode(fixed);
     if (decoded is List) {
-      return decoded.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+      return decoded.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
     }
   } catch (_) {}
   

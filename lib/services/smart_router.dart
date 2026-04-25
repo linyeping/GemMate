@@ -33,10 +33,14 @@ class SmartRouter {
     connectionStore.setLocalModelAvailable(localGemma.isAvailable);
   }
 
-  Future<String> route(List<ChatMessage> history, String prompt) async {
+  Future<String> route(
+    List<ChatMessage> history,
+    String prompt, {
+    String? systemPromptOverride,
+  }) async {
     // Check connections first
     await checkConnection();
-    
+
     final hasLaptop = connectionStore.isLaptopConnected;
     final hasLocal = localGemma.isAvailable;
 
@@ -51,7 +55,7 @@ class SmartRouter {
     // Priority 2: Local model available → use on-device
     if (hasLocal) {
       print('SmartRouter: using local model (Gemma 4 E2B on-device)');
-      return await localGemma.generate(prompt);
+      return await localGemma.generate(prompt, systemPromptOverride: systemPromptOverride);
     }
 
     // Priority 3: No laptop, but maybe model is installed but not initialized
@@ -62,7 +66,7 @@ class SmartRouter {
       if (localGemma.isAvailable) {
         connectionStore.setLocalModelAvailable(true);
         print('SmartRouter: initialized! using local model');
-        return await localGemma.generate(prompt);
+        return await localGemma.generate(prompt, systemPromptOverride: systemPromptOverride);
       }
     }
 

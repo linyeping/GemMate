@@ -4,6 +4,8 @@ import '../models/flashcard.dart';
 import '../stores/flashcard_store.dart';
 import '../widgets/neumorphic_container.dart';
 import 'deck_study_screen.dart';
+import 'qr_share_screen.dart';
+import 'qr_scan_screen.dart';
 
 class FlashcardScreen extends StatefulWidget {
   const FlashcardScreen({super.key});
@@ -62,6 +64,15 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             children: [
               const Text('My Decks', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               const Spacer(),
+              // Scan QR to import a deck from another device
+              IconButton(
+                icon: const Icon(Icons.qr_code_scanner),
+                tooltip: 'Scan QR to import deck',
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const QrScanScreen()),
+                ),
+              ),
               Text('${_store.totalCards} cards',
                 style: const TextStyle(fontSize: 14, color: Colors.grey)),
             ],
@@ -89,7 +100,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       const Color(0xFF4361EE), const Color(0xFF7209B7), const Color(0xFFF72585),
       const Color(0xFF06D6A0), const Color(0xFF4CC9F0), const Color(0xFFFFBE0B),
     ];
-    final accentColor = accentColors[groupId.hashCode.abs() % accentColors.length];
+    // Use bitwise mask instead of abs() to avoid int.minValue overflow.
+    final accentColor = accentColors[(groupId.hashCode & 0x7FFFFFFF) % accentColors.length];
 
     final displayCount = cards.length.clamp(1, 4);
     final angles = [-6.0, -2.0, 2.0, 6.0];
@@ -283,6 +295,20 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 onTap: () {
                   Navigator.pop(ctx);
                   _renameDeck(groupId, currentName);
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.qr_code, color: Color(0xFF4CC9F0)),
+                title: const Text('Share via QR code'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => QrShareScreen(groupId: groupId),
+                    ),
+                  );
                 },
               ),
 

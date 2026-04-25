@@ -26,7 +26,7 @@ class ChatSessionTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: isActive ? theme.colorScheme.primaryContainer.withOpacity(0.5) : null,
+        color: isActive ? theme.colorScheme.primaryContainer.withValues(alpha: 0.5) : null,
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
@@ -91,32 +91,43 @@ class ChatSessionTile extends StatelessWidget {
   }
 
   void _showRenameDialog(BuildContext context) {
-    final controller = TextEditingController(text: session.title);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Rename Chat'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: const InputDecoration(hintText: 'Enter new title'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+      builder: (context) {
+        // Controller lives inside StatefulBuilder so it's properly disposed
+        // when the dialog is closed — avoids TextEditingController leaks on
+        // every rename dialog open.
+        final controller = TextEditingController(text: session.title);
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Rename Chat'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: const InputDecoration(hintText: 'Enter new title'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  controller.dispose();
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (controller.text.trim().isNotEmpty) {
+                    onRename(controller.text.trim());
+                    controller.dispose();
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              if (controller.text.trim().isNotEmpty) {
-                onRename(controller.text.trim());
-                Navigator.pop(context);
-              }
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

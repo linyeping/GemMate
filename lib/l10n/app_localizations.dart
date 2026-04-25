@@ -138,6 +138,75 @@ class AppLocalizations {
   String get summarize => _getValue('summarize');
   String get noTextDetected => _getValue('noTextDetected');
   String get connectLaptopForImageAnalysis => _getValue('connectLaptopForImageAnalysis');
+
+  // Home screen — simple getters
+  String get goodMorning => _getValue('goodMorning');
+  String get goodAfternoon => _getValue('goodAfternoon');
+  String get goodEvening => _getValue('goodEvening');
+  String get readyToStudy => _getValue('readyToStudy');
+  String get dayStreak => _getValue('dayStreak');
+  String get totalDays => _getValue('totalDays');
+  String get today => _getValue('today');
+  String get cards => _getValue('cards');
+  String get chats => _getValue('chats');
+  String get breakTime => _getValue('breakTime');
+  String get focusSession => _getValue('focusSession');
+  String get timerRest => _getValue('timerRest');
+  String get timerFocus => _getValue('timerFocus');
+  String get reset => _getValue('reset');
+  String get finishEarly => _getValue('finishEarly');
+  String get breakTip => _getValue('breakTip');
+  String get focusTip => _getValue('focusTip');
+  String get sessionComplete => _getValue('sessionComplete');
+  String get takeABreak => _getValue('takeABreak');
+  String get keepGoing => _getValue('keepGoing');
+  String get breakOver => _getValue('breakOver');
+
+  // Home screen — parameterized helpers
+  String pomodorosDoneToday(int count) =>
+      _getValue('pomodorosDoneToday').replaceAll('{count}', '$count');
+
+  String streakLabel(int streak) {
+    // English needs singular/plural handling; other languages don't
+    if (locale.languageCode == 'en') {
+      return 'Streak: $streak day${streak == 1 ? '' : 's'} 🔥';
+    }
+    return _getValue('streakLabel').replaceAll('{streak}', '$streak');
+  }
+
+  String sessionsCompletedToday(int count) {
+    if (locale.languageCode == 'en') {
+      return '$count session${count == 1 ? '' : 's'} completed today';
+    }
+    return _getValue('sessionsCompletedToday').replaceAll('{count}', '$count');
+  }
+
+  // QR Gallery
+  String get scanFromGallery => _getValue('scanFromGallery');
+  String get noQrInImage => _getValue('noQrInImage');
+
+  // Custom Timer
+  String get customTimer => _getValue('customTimer');
+  String get workDuration => _getValue('workDuration');
+  String get breakDuration => _getValue('breakDuration');
+  String get minutesUnit => _getValue('minutesUnit');
+  String get apply => _getValue('apply');
+
+  // Camera / Math Solver
+  String get mathSolver => _getValue('mathSolver');
+  String get generalMode => _getValue('generalMode');
+  String get solveStepByStep => _getValue('solveStepByStep');
+  String get stepSolution => _getValue('stepSolution');
+  String get saveMathCards => _getValue('saveMathCards');
+
+  // Document Import
+  String get importDocument => _getValue('importDocument');
+
+  // Mind Map
+  String get mindMap => _getValue('mindMap');
+  String get generatingMindMap => _getValue('generatingMindMap');
+  String get mindMapHint => _getValue('mindMapHint');
+  String get mindMapError => _getValue('mindMapError');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

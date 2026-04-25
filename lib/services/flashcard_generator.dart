@@ -58,20 +58,25 @@ class FlashcardGenerator {
 
       final cards = robustJsonParse(responseText);
       
-      return cards.map((json) {
-        final front = json['front']?.toString() 
-            ?? json['question']?.toString() 
-            ?? json['q']?.toString() 
+      final base = DateTime.now().millisecondsSinceEpoch;
+      return cards.asMap().entries.map((entry) {
+        final idx = entry.key;
+        final json = entry.value;
+        final front = json['front']?.toString()
+            ?? json['question']?.toString()
+            ?? json['q']?.toString()
             ?? '';
-        final back = json['back']?.toString() 
-            ?? json['answer']?.toString() 
-            ?? json['a']?.toString() 
+        final back = json['back']?.toString()
+            ?? json['answer']?.toString()
+            ?? json['a']?.toString()
             ?? '';
-        
+
         if (front.isEmpty || back.isEmpty) return null;
-        
+
         return Flashcard(
-          id: DateTime.now().microsecondsSinceEpoch.toString() + '_${cards.indexOf(json)}',
+          // Use stable index-based ID: avoids reference-equality pitfalls
+          // with indexOf() and ensures uniqueness within a batch.
+          id: '${base}_$idx',
           groupId: groupId,
           groupName: groupName,
           front: front,

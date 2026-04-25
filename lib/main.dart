@@ -71,7 +71,7 @@ void main() async {
           File? found;
           int foundSize = 0;
           try {
-            for (final entity in appDir.listSync(recursive: true)) {
+            for (final entity in await appDir.list(recursive: true).toList()) {
               if (entity is File) {
                 try {
                   final size = entity.lengthSync();

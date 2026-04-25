@@ -32,7 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   final _localeStore = LocaleStore();
   final _downloadService = ModelDownloadService();
   
-  final _ipController = TextEditingController(text: '192.168.1.103');
+  final _ipController = TextEditingController(); // populated in _loadSettings
   final _hfTokenController = TextEditingController();
   bool _isModelInstalled = false;
 

@@ -25,11 +25,14 @@ class NotificationService {
 
   Future<void> initialize() async {
     tz_data.initializeTimeZones();
-    // Setting to Shanghai since the user is likely in China
+    // Detect device timezone from system UTC offset and map to an IANA name.
+    // This covers all major locales including hackathon evaluators worldwide.
     try {
-      tz.setLocalLocation(tz.getLocation('Asia/Shanghai'));
+      final tzName = _ianaFromOffset(DateTime.now().timeZoneOffset);
+      tz.setLocalLocation(tz.getLocation(tzName));
     } catch (e) {
-      print('Timezone initialization failed: $e');
+      print('Timezone initialization failed, falling back to UTC: $e');
+      try { tz.setLocalLocation(tz.getLocation('UTC')); } catch (_) {}
     }
     
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -242,6 +245,39 @@ class NotificationService {
       scheduled = scheduled.add(const Duration(days: 1));
     }
     return scheduled;
+  }
+
+  /// Maps a UTC offset to an IANA timezone name.
+  /// Covers every major timezone used by likely users / evaluators.
+  static String _ianaFromOffset(Duration offset) {
+    const map = {
+      -12: 'Etc/GMT+12',
+      -11: 'Pacific/Midway',
+      -10: 'Pacific/Honolulu',
+      -9:  'America/Anchorage',
+      -8:  'America/Los_Angeles',
+      -7:  'America/Denver',
+      -6:  'America/Chicago',
+      -5:  'America/New_York',
+      -4:  'America/Halifax',
+      -3:  'America/Sao_Paulo',
+      -2:  'Etc/GMT+2',
+      -1:  'Atlantic/Azores',
+      0:   'UTC',
+      1:   'Europe/Paris',
+      2:   'Europe/Helsinki',
+      3:   'Europe/Moscow',
+      4:   'Asia/Dubai',
+      5:   'Asia/Karachi',
+      6:   'Asia/Dhaka',
+      7:   'Asia/Bangkok',
+      8:   'Asia/Shanghai',
+      9:   'Asia/Tokyo',
+      10:  'Australia/Sydney',
+      11:  'Pacific/Noumea',
+      12:  'Pacific/Auckland',
+    };
+    return map[offset.inHours] ?? 'UTC';
   }
 
   Future<void> cancelInactivityReminder() async {
