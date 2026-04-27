@@ -316,6 +316,7 @@ lib/
 │   ├── flashcard.dart                 # Flashcard with SM-2 fields + grouping
 │   ├── quiz.dart                      # Quiz state model
 │   ├── quiz_question.dart             # Quiz question model
+│   ├── quiz_result.dart               # Summary and score of a completed quiz
 │   └── study_plan.dart                # Spaced repetition schedule model
 ├── screens/
 │   ├── capture_screen.dart            # Camera / OCR + Math Solver mode
@@ -328,6 +329,7 @@ lib/
 │   ├── home_screen.dart               # Dashboard + custom Pomodoro timer
 │   ├── mind_map_screen.dart           # AI-generated interactive mind map
 │   ├── onboarding_screen.dart         # First-launch setup + model download
+│   ├── paper_screen.dart              # Detailed view and export of study papers
 │   ├── qr_scan_screen.dart            # QR scan (camera + gallery)
 │   ├── qr_share_screen.dart           # QR code sharing for decks
 │   ├── quiz_screen.dart               # Interactive quiz UI
@@ -354,6 +356,7 @@ lib/
 └── widgets/
     ├── animated_avatar.dart           # AI/User animated profile picture
     ├── chat_session_tile.dart         # Chat history list item
+    ├── code_block.dart                # Syntax-highlighted code display
     ├── color_scheme_picker.dart       # Theme color selector
     ├── connection_indicator.dart      # Connection status pill
     ├── download_progress_widget.dart  # Model download status UI
