@@ -374,7 +374,7 @@ lib/
 
 ## 👤 開発者について
 
-**Sheng Wei & Lin Yeping** — 中国の**甘肃政法大学 (GSUPL)**でAIを専攻。
+**Sheng Wei** — 中国の**甘肃政法大学 (GSUPL)**でAIを専攻。個人開発者。
 
 過去のプロジェクト: **InSeeVision** (Gemma 3 アクセシビリティプロジェクト)。
 

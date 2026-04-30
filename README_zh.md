@@ -374,12 +374,12 @@ lib/
 
 ## 👤 关于开发者
 
-**盛伟 & 林业平** — 就读于**甘肃政法大学**，人工智能专业。
+**盛伟** — 就读于**甘肃政法大学**，人工智能专业。独立开发者。
 
 过往项目：**InSeeVision** (Gemma 3 无障碍项目)。
 
-- GitHub: [@林业平](https://github.com/linyeping)
-- Kaggle: [林业平](https://kaggle.com/linyeping)
+- GitHub: [@linyeping](https://github.com/linyeping)
+- Kaggle: [linyeping](https://kaggle.com/linyeping)
 
 ---
 

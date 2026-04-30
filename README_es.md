@@ -372,9 +372,9 @@ lib/
 
 ---
 
-## 👤 Sobre los Desarrolladores
+## 👤 Sobre el Desarrollador
 
-**Sheng Wei & Lin Yeping** — Estudiantes de IA en la **Universidad de Ciencias Políticas y Derecho de Gansu (GSUPL)** en China.
+**Sheng Wei** — Estudiante de IA en la **Universidad de Ciencias Políticas y Derecho de Gansu (GSUPL)** en China. Desarrollador independiente.
 
 Proyectos Anteriores: **InSeeVision** (proyecto de accesibilidad de Gemma 3).
 
