@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GemMate — AI Study Companion Powered by Gemma 4</title>
+  <meta name="description" content="GemMate: Your AI study companion powered by Gemma 4. 100% on-device, 100% private. Flashcards, quizzes, mind maps, and more.">
+  <meta name="theme-color" content="#050a15">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="GemMate — AI Study Companion">
+  <meta property="og:description" content="100% on-device AI study tools powered by Gemma 4. No cloud. No API keys. Your data stays yours.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/cover.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!-- ===== Navigation ===== -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/logo.png" alt="GemMate" width="36" height="36">
+        <span>GemMate</span>
+      </a>
+
+      <div class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link is-active" data-i18n="nav.home">Home</a>
+        <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+        <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+        <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+        <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+      </div>
+
+      <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle">
+          <button class="lang-toggle__btn is-active" data-lang="en">EN</button>
+          <button class="lang-toggle__btn" data-lang="zh">中文</button>
+        </div>
+
+        <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="nav__github" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav__mobile" id="mobileMenu">
+      <a href="index.html" class="nav__link is-active" data-i18n="nav.home">Home</a>
+      <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+      <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+      <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+      <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+    </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero" id="hero">
+    <!-- Particle canvas background -->
+    <div class="hero__bg">
+      <canvas id="particleCanvas"></canvas>
+    </div>
+
+    <!-- Ambient glows -->
+    <div class="hero__glow hero__glow--1"></div>
+    <div class="hero__glow hero__glow--2"></div>
+    <div class="hero__glow hero__glow--3"></div>
+
+    <!-- Grid background -->
+    <div class="grid-bg"></div>
+
+    <div class="hero__inner">
+      <!-- Left: Text -->
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          <span data-i18n="hero.badge">Built for Gemma 4 Good Hackathon 2026</span>
+        </div>
+
+        <h1 class="hero__title">
+          <span data-i18n="hero.title1">Your AI Study</span><br>
+          <span class="gradient-text" data-i18n="hero.title2">Companion</span>
+        </h1>
+
+        <p class="hero__subtitle" data-i18n="hero.subtitle">
+          Powered by Google's Gemma 4 — runs 100% on your device. No cloud. No API keys. Your data never leaves your phone.
+        </p>
+
+        <div class="hero__cta">
+          <a href="download.html" class="btn btn--primary btn--lg">
+            <svg class="btn__icon" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+            <span data-i18n="hero.cta1">Download APK</span>
+          </a>
+          <a href="#demo" class="btn btn--outline btn--lg">
+            <svg class="btn__icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+            <span data-i18n="hero.cta2">Watch Demo</span>
+          </a>
+        </div>
+
+        <div class="hero__stats">
+          <div>
+            <div class="hero__stat-value" data-count="12">12</div>
+            <div class="hero__stat-label" data-i18n="hero.stat1">Features</div>
+          </div>
+          <div>
+            <div class="hero__stat-value" data-count="6">6</div>
+            <div class="hero__stat-label" data-i18n="hero.stat2">Languages</div>
+          </div>
+          <div>
+            <div class="hero__stat-value">100%</div>
+            <div class="hero__stat-label" data-i18n="hero.stat3">Offline</div>
+          </div>
+          <div>
+            <div class="hero__stat-value">&lt;1s</div>
+            <div class="hero__stat-label" data-i18n="hero.stat4">Response</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Phone mockup -->
+      <div class="hero__visual">
+        <div class="hero__phone-glow"></div>
+
+        <div class="phone-mockup phone-mockup--tilt">
+          <div class="phone-mockup__notch"></div>
+          <div class="phone-mockup__screen">
+            <img src="assets/images/screenshots/demo1.jpg" alt="GemMate AI Chat" loading="eager">
+          </div>
+        </div>
+
+        <!-- Floating chips -->
+        <div class="hero__float hero__float--1">
+          <div class="hero__chip">
+            <span class="hero__chip-icon">🧠</span>
+            <span data-i18n="hero.chip1">Gemma 4 E2B</span>
+          </div>
+        </div>
+        <div class="hero__float hero__float--2">
+          <div class="hero__chip">
+            <span class="hero__chip-icon">🔒</span>
+            <span data-i18n="hero.chip2">100% Private</span>
+          </div>
+        </div>
+        <div class="hero__float hero__float--3">
+          <div class="hero__chip">
+            <span class="hero__chip-icon">⚡</span>
+            <span data-i18n="hero.chip3">On-Device AI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Problem / Solution ===== -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="glow-line"></div>
+    <div class="container" style="padding-top: var(--space-16);">
+      <div class="grid grid--2 gap-8 animate-on-scroll" data-animate="stagger">
+        <!-- Problem -->
+        <div class="glass-card">
+          <div class="label" style="margin-bottom: var(--space-4);" data-i18n="problem.label">The Problem</div>
+          <h3 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);" data-i18n="problem.title">
+            Cloud AI Isn't Built for Students
+          </h3>
+          <p style="color: var(--color-text-secondary); line-height: var(--leading-normal);" data-i18n="problem.desc">
+            Existing AI tools require constant internet, charge subscription fees, and send your study data to remote servers. In a library, on a train, or during exams — when you need help most, cloud AI lets you down.
+          </p>
+        </div>
+
+        <!-- Solution -->
+        <div class="glass-card glass-card--glow">
+          <div class="label" style="margin-bottom: var(--space-4); color: var(--color-cyan);" data-i18n="solution.label">The Solution</div>
+          <h3 style="font-size: var(--text-2xl); margin-bottom: var(--space-3);" data-i18n="solution.title">
+            GemMate: AI That Lives on Your Phone
+          </h3>
+          <p style="color: var(--color-text-secondary); line-height: var(--leading-normal);" data-i18n="solution.desc">
+            GemMate runs Google's Gemma 4 E2B directly on your device. Generate flashcards, take quizzes, build mind maps — all without internet. Your data never leaves your phone. Zero cost. Zero compromise.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Feature Grid (Overview) ===== -->
+  <section class="section" id="features-overview">
+    <div class="container">
+      <div class="section__header animate-on-scroll" data-animate="fade-up">
+        <div class="label" data-i18n="features.label">Features</div>
+        <h2 class="section-title">
+          <span data-i18n="features.title">Everything You Need to </span>
+          <span class="gradient-text" data-i18n="features.title-highlight">Study Smarter</span>
+        </h2>
+        <p class="section-subtitle" data-i18n="features.subtitle">
+          12 powerful AI-driven tools, all running locally on your device
+        </p>
+      </div>
+
+      <div class="grid grid--4 gap-6 animate-on-scroll" data-animate="stagger">
+        <!-- Feature cards -->
+        <a href="features.html#chat" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-ocean); border-color: rgba(77,208,225,0.2); background: rgba(77,208,225,0.06);">💬</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.chat">AI Chat</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.chat.desc">Chat with Gemma 4 in 6 languages</p>
+        </a>
+
+        <a href="features.html#flashcards" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-sunset); border-color: rgba(255,171,64,0.2); background: rgba(255,171,64,0.06);">📇</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.flashcards">Smart Flashcards</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.flashcards.desc">AI-generated with SM-2 spaced repetition</p>
+        </a>
+
+        <a href="features.html#quiz" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-forest); border-color: rgba(165,214,167,0.2); background: rgba(165,214,167,0.06);">✅</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.quiz">Interactive Quizzes</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.quiz.desc">Auto-generated multiple choice tests</p>
+        </a>
+
+        <a href="features.html#ocr" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-lavender); border-color: rgba(206,147,216,0.2); background: rgba(206,147,216,0.06);">📸</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.ocr">Camera / OCR</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.ocr.desc">Scan textbooks and get AI explanations</p>
+        </a>
+
+        <a href="features.html#voice" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-aurora); border-color: rgba(128,203,196,0.2); background: rgba(128,203,196,0.06);">🎤</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.voice">Voice Input</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.voice.desc">Hands-free in 6 languages</p>
+        </a>
+
+        <a href="features.html#i18n" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-cherry); border-color: rgba(255,138,128,0.2); background: rgba(255,138,128,0.06);">🌍</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.i18n">6 Languages</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.i18n.desc">Full UI in EN, ZH, JA, KO, FR, ES</p>
+        </a>
+
+        <a href="features.html#notifications" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-midnight); border-color: rgba(121,134,203,0.2); background: rgba(121,134,203,0.06);">🔔</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.notif">Smart Notifications</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.notif.desc">Spaced repetition reminders</p>
+        </a>
+
+        <a href="features.html#mindmap" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-candy); border-color: rgba(244,143,177,0.2); background: rgba(244,143,177,0.06);">🗺️</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.mindmap">Mind Maps</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.mindmap.desc">One-tap AI visual knowledge maps</p>
+        </a>
+
+        <a href="features.html#docs" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-ocean); border-color: rgba(77,208,225,0.2); background: rgba(77,208,225,0.06);">📄</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.docs">Document Import</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.docs.desc">Import PDF &amp; DOCX files</p>
+        </a>
+
+        <a href="features.html#math" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-sunset); border-color: rgba(255,171,64,0.2); background: rgba(255,171,64,0.06);">🔢</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.math">Math Solver</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.math.desc">Camera-based equation solving</p>
+        </a>
+
+        <a href="features.html#qr" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-forest); border-color: rgba(165,214,167,0.2); background: rgba(165,214,167,0.06);">📱</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.qr">QR Sharing</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.qr.desc">Share flashcard decks via QR code</p>
+        </a>
+
+        <a href="features.html#pomodoro" class="glass-card" style="padding: var(--space-6); cursor: pointer;">
+          <div class="feature-icon" style="color: var(--color-lavender); border-color: rgba(206,147,216,0.2); background: rgba(206,147,216,0.06);">⏱️</div>
+          <h4 style="margin-top: var(--space-3); font-size: var(--text-base);" data-i18n="feat.pomodoro">Pomodoro Timer</h4>
+          <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted);" data-i18n="feat.pomodoro.desc">Customizable focus sessions</p>
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-top: var(--space-12);" class="animate-on-scroll" data-animate="fade-up">
+        <a href="features.html" class="btn btn--outline" data-i18n="features.viewall">Explore All Features →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Demo Video ===== -->
+  <section class="section section--sm" id="demo" style="background: var(--color-bg-secondary);">
+    <div class="container">
+      <div class="section__header animate-on-scroll" data-animate="fade-up">
+        <div class="label" data-i18n="demo.label">Demo</div>
+        <h2 class="section-title">
+          <span data-i18n="demo.title">See GemMate </span>
+          <span class="gradient-text" data-i18n="demo.title-highlight">in Action</span>
+        </h2>
+      </div>
+
+      <div style="display: flex; justify-content: center;" class="animate-on-scroll" data-animate="scale-in">
+        <div class="video-container" id="videoContainer">
+          <video controls preload="metadata" poster="assets/images/cover.png">
+            <source src="https://gemmatedemo.netlify.app/assets/videos/GemMateDemo.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted);">
+        <span data-i18n="demo.also-youtube">Also available on </span>
+        <a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" style="color: var(--color-cyan);">YouTube ↗</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Stats ===== -->
+  <section class="section section--sm">
+    <div class="container">
+      <div class="stats-row animate-on-scroll" data-animate="stagger">
+        <div class="stat">
+          <div class="stat__number gradient-text" data-count="12">0</div>
+          <div class="stat__label" data-i18n="stats.features">AI-Powered Features</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number gradient-text" data-count="6">0</div>
+          <div class="stat__label" data-i18n="stats.languages">Languages Supported</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number gradient-text">100%</div>
+          <div class="stat__label" data-i18n="stats.offline">Offline Capable</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number gradient-text">0</div>
+          <div class="stat__label" data-i18n="stats.cost">Cost to Use</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="cta-section">
+      <div class="cta-section__glow"></div>
+      <div class="container" style="position: relative;">
+        <div class="animate-on-scroll" data-animate="fade-up">
+          <h2 class="section-title">
+            <span data-i18n="cta.title">Ready to Study </span>
+            <span class="gradient-text" data-i18n="cta.title-highlight">Smarter</span>?
+          </h2>
+          <p class="section-subtitle" style="margin: var(--space-4) auto var(--space-8);" data-i18n="cta.subtitle">
+            Download GemMate and experience AI-powered studying — no internet required.
+          </p>
+          <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+            <a href="download.html" class="btn btn--primary btn--lg" data-i18n="cta.download">Download Now</a>
+            <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="btn btn--outline btn--lg">
+              <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <span data-i18n="cta.github">View on GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <img src="assets/images/logo.png" alt="GemMate" width="32" height="32">
+            <span>GemMate</span>
+          </div>
+          <p class="footer__desc" data-i18n="footer.desc">
+            AI-powered study companion built with Google's Gemma 4. 100% on-device, 100% private.
+          </p>
+          <div class="footer__hackathon">
+            <span>🏆</span>
+            <span data-i18n="footer.hackathon">Gemma 4 Good Hackathon 2026</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer__col-title" data-i18n="footer.product">Product</div>
+          <div class="footer__col-links">
+            <a href="features.html" class="footer__col-link" data-i18n="nav.features">Features</a>
+            <a href="architecture.html" class="footer__col-link" data-i18n="nav.architecture">Architecture</a>
+            <a href="download.html" class="footer__col-link" data-i18n="nav.download">Download</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer__col-title" data-i18n="footer.resources">Resources</div>
+          <div class="footer__col-links">
+            <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__col-link">GitHub</a>
+            <a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.demo">Demo Video</a>
+            <a href="https://github.com/linyeping/GemMate/releases/latest" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.releases">Releases</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer__col-title" data-i18n="footer.connect">Connect</div>
+          <div class="footer__col-links">
+            <a href="about.html" class="footer__col-link" data-i18n="nav.about">About</a>
+            <a href="mailto:yepinglin20@gmail.com" class="footer__col-link">yepinglin20@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>&copy; 2026 GemMate. Apache 2.0 License.</span>
+        <div class="footer__socials">
+          <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__social" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://kaggle.com/linyeping" target="_blank" rel="noopener" class="footer__social" aria-label="Kaggle">
+            <svg viewBox="0 0 24 24"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.075.312z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -72,14 +72,24 @@ class FlashcardStore extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Serialised save: if a write is already in-flight, mark pending and
-  // re-run after it completes — prevents concurrent SharedPreferences writes.
+  // Serialised save: if a write is already in-flight, set a dirty flag so
+  // the latest state is flushed once the current write finishes. Previously
+  // the early-return discarded updates that arrived mid-write, causing data
+  // loss when the user reviewed cards rapidly and then killed the app.
+  bool _dirty = false;
+
   Future<void> save() async {
-    if (_savePending) return;
+    if (_savePending) {
+      _dirty = true; // schedule a re-save after current write finishes
+      return;
+    }
     _savePending = true;
     try {
-      await _storage.saveFlashcards(List.unmodifiable(_flashcards));
-      _notifications.scheduleFlashcardReminders(_flashcards);
+      do {
+        _dirty = false;
+        await _storage.saveFlashcards(List.unmodifiable(_flashcards));
+        _notifications.scheduleFlashcardReminders(_flashcards);
+      } while (_dirty); // drain any writes that queued during the save
     } finally {
       _savePending = false;
     }

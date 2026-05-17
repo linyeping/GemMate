@@ -110,7 +110,17 @@ class OllamaService {
       });
     }
 
-    messages.add({'role': 'user', 'content': newMessage});
+    // The caller (chat_screen) already added the user message to history
+    // before calling route(). Only append newMessage if it's NOT already
+    // the last user entry in the messages list — otherwise the model sees
+    // the same question twice and produces garbled responses.
+    final lastUserMsg = messages.lastWhere(
+      (m) => m['role'] == 'user',
+      orElse: () => <String, dynamic>{},
+    );
+    if (lastUserMsg['content'] != newMessage) {
+      messages.add({'role': 'user', 'content': newMessage});
+    }
 
     try {
       final response = await http.post(

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features — GemMate</title>
+  <meta name="description" content="Explore GemMate's 12 AI-powered study features: flashcards, quizzes, mind maps, OCR, voice input, and more.">
+  <meta name="theme-color" content="#050a15">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/features.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/logo.png" alt="GemMate" width="36" height="36">
+        <span>GemMate</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+        <a href="features.html" class="nav__link is-active" data-i18n="nav.features">Features</a>
+        <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+        <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+        <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+      </div>
+      <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle">
+          <button class="lang-toggle__btn is-active" data-lang="en">EN</button>
+          <button class="lang-toggle__btn" data-lang="zh">中文</button>
+        </div>
+        <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="nav__github" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobileMenu">
+      <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+      <a href="features.html" class="nav__link is-active" data-i18n="nav.features">Features</a>
+      <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+      <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+      <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="features-hero">
+    <div class="grid-bg"></div>
+    <div class="container" style="position:relative;">
+      <div class="label" data-i18n="fd.label">Features</div>
+      <h1 class="section-title" style="margin-top: var(--space-3);">
+        <span data-i18n="fd.title">Powerful Tools for </span>
+        <span class="gradient-text" data-i18n="fd.title-highlight">Smarter Learning</span>
+      </h1>
+      <p class="section-subtitle" style="margin: 0 auto;" data-i18n="fd.subtitle">Explore every feature in detail</p>
+    </div>
+  </section>
+
+  <!-- Feature 1: AI Chat -->
+  <section class="feature-section" id="chat">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-ocean);"></div>
+          <div class="feature-row__icon" style="color: var(--color-ocean);">💬</div>
+          <h2 class="feature-row__title" data-i18n="feat.chat">AI Chat</h2>
+          <p class="feature-row__desc" data-i18n="feat.chat.desc">Chat with Gemma 4 in 6 languages</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.chat.b1">Natural conversation with Gemma 4 E2B</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.chat.b2">Bilingual explanations for deeper understanding</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.chat.b3">Context-aware follow-up questions</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo1.jpg" alt="AI Chat" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 2: Flashcards -->
+  <section class="feature-section" id="flashcards">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-sunset);"></div>
+          <div class="feature-row__icon" style="color: var(--color-sunset);">📇</div>
+          <h2 class="feature-row__title" data-i18n="feat.flashcards">Smart Flashcards</h2>
+          <p class="feature-row__desc" data-i18n="feat.flashcards.desc">AI-generated with SM-2 spaced repetition</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.flashcards.b1">AI generates flashcards from any topic</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.flashcards.b2">SM-2 algorithm optimizes review schedule</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.flashcards.b3">Fan-shaped card piles with flip animations</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-group">
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo7.jpg" alt="Flashcard Front" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo8.jpg" alt="Flashcard Back" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 3: Quizzes -->
+  <section class="feature-section" id="quiz">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-forest);"></div>
+          <div class="feature-row__icon" style="color: var(--color-forest);">✅</div>
+          <h2 class="feature-row__title" data-i18n="feat.quiz">Interactive Quizzes</h2>
+          <p class="feature-row__desc" data-i18n="feat.quiz.desc">Auto-generated multiple choice tests</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.quiz.b1">AI creates quizzes from your study topics</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.quiz.b2">Wrong answers auto-convert to flashcards</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.quiz.b3">Score tracking and progress visualization</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-group">
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo2.jpg" alt="Quiz" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo3.jpg" alt="Quiz Answer" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo4.jpg" alt="Quiz Result" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 4: OCR -->
+  <section class="feature-section" id="ocr">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-lavender);"></div>
+          <div class="feature-row__icon" style="color: var(--color-lavender);">📸</div>
+          <h2 class="feature-row__title" data-i18n="feat.ocr">Camera / OCR</h2>
+          <p class="feature-row__desc" data-i18n="feat.ocr.desc">Scan textbooks and get AI explanations</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.ocr.b1">Photograph any textbook page</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.ocr.b2">ML Kit OCR extracts text offline</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.ocr.b3">Gemma 4 explains the content</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo9.jpg" alt="OCR" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 5: Voice -->
+  <section class="feature-section" id="voice">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-aurora);"></div>
+          <div class="feature-row__icon" style="color: var(--color-aurora);">🎤</div>
+          <h2 class="feature-row__title" data-i18n="feat.voice">Voice Input</h2>
+          <p class="feature-row__desc" data-i18n="feat.voice.desc">Hands-free in 6 languages</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.voice.b1">Speech-to-text in 6 languages</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.voice.b2">Ask questions without typing</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.voice.b3">Perfect for on-the-go studying</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/demo10.jpg" alt="Voice Input" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 6: Languages -->
+  <section class="feature-section" id="i18n">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-cherry);"></div>
+          <div class="feature-row__icon" style="color: var(--color-cherry);">🌍</div>
+          <h2 class="feature-row__title" data-i18n="feat.i18n">6 Languages</h2>
+          <p class="feature-row__desc" data-i18n="feat.i18n.desc">Full UI in EN, ZH, JA, KO, FR, ES</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.i18n.b1">English, Chinese, Japanese, Korean, French, Spanish</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.i18n.b2">Complete UI localization</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.i18n.b3">Automatic language detection</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/languages.jpg" alt="Languages" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 7: Notifications -->
+  <section class="feature-section" id="notifications">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-midnight);"></div>
+          <div class="feature-row__icon" style="color: var(--color-midnight);">🔔</div>
+          <h2 class="feature-row__title" data-i18n="feat.notif">Smart Notifications</h2>
+          <p class="feature-row__desc" data-i18n="feat.notif.desc">Spaced repetition reminders</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.notif.b1">Review reminders based on SM-2 schedule</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.notif.b2">Daily study prompts</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.notif.b3">Inactivity nudges to keep you on track</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/Notifications.jpg" alt="Notifications" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 8: Mind Maps -->
+  <section class="feature-section" id="mindmap">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-candy);"></div>
+          <div class="feature-row__icon" style="color: var(--color-candy);">🗺️</div>
+          <h2 class="feature-row__title" data-i18n="feat.mindmap">Mind Maps</h2>
+          <p class="feature-row__desc" data-i18n="feat.mindmap.desc">One-tap AI visual knowledge maps</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.mindmap.b1">AI generates topic mind maps instantly</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.mindmap.b2">Bezier curves and interactive canvas</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.mindmap.b3">Pan, zoom, and explore connections</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/MindMap.jpg" alt="Mind Map" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 9: Docs -->
+  <section class="feature-section" id="docs">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-ocean);"></div>
+          <div class="feature-row__icon" style="color: var(--color-ocean);">📄</div>
+          <h2 class="feature-row__title" data-i18n="feat.docs">Document Import</h2>
+          <p class="feature-row__desc" data-i18n="feat.docs.desc">Import PDF & DOCX files</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.docs.b1">Import PDF files with text extraction</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.docs.b2">DOCX support via ZIP/XML parsing</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.docs.b3">Generate study materials from your docs</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-mockup phone-mockup--tilt">
+            <div class="phone-mockup__notch"></div>
+            <div class="phone-mockup__screen"><img src="assets/images/screenshots/PDF + DOCX.jpg" alt="Document Import" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 10: Math -->
+  <section class="feature-section" id="math">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-sunset);"></div>
+          <div class="feature-row__icon" style="color: var(--color-sunset);">🔢</div>
+          <h2 class="feature-row__title" data-i18n="feat.math">Math Solver</h2>
+          <p class="feature-row__desc" data-i18n="feat.math.desc">Camera-based equation solving</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.math.b1">Photograph handwritten equations</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.math.b2">Step-by-step AI solutions</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.math.b3">Save solutions as flashcards</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-group">
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Mathematics Solver-1.jpg" alt="Math Mode" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Mathematics Solver-2.jpg" alt="Math Analysis" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Mathematics Solver-3.jpg" alt="Math Solution" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 11: QR -->
+  <section class="feature-section" id="qr">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-forest);"></div>
+          <div class="feature-row__icon" style="color: var(--color-forest);">📱</div>
+          <h2 class="feature-row__title" data-i18n="feat.qr">QR Sharing</h2>
+          <p class="feature-row__desc" data-i18n="feat.qr.desc">Share flashcard decks via QR code</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.qr.b1">Generate QR codes for any flashcard deck</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.qr.b2">Scan QR from camera or gallery</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.qr.b3">Share study materials with classmates</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-group">
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/QR Code Scanning Interface.jpg" alt="QR Scan" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Example QR Code.jpg" alt="QR Code" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 12: Pomodoro -->
+  <section class="feature-section" id="pomodoro">
+    <div class="container">
+      <div class="feature-row animate-on-scroll" data-animate="fade-up">
+        <div class="feature-row__content">
+          <div class="feature-section__accent" style="background: var(--color-lavender);"></div>
+          <div class="feature-row__icon" style="color: var(--color-lavender);">⏱️</div>
+          <h2 class="feature-row__title" data-i18n="feat.pomodoro">Pomodoro Timer</h2>
+          <p class="feature-row__desc" data-i18n="feat.pomodoro.desc">Customizable focus sessions</p>
+          <div class="feature-row__bullets">
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.pomodoro.b1">Adjustable focus (1-120 min) and break (1-60 min)</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.pomodoro.b2">Daily session tracking</span></div>
+            <div class="feature-row__bullet"><div class="feature-row__bullet-dot"></div><span data-i18n="feat.pomodoro.b3">Helps maintain consistent study habits</span></div>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="phone-group">
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Pomodoro timer interface.jpg" alt="Pomodoro" loading="lazy"></div>
+            </div>
+            <div class="phone-mockup phone-mockup--sm">
+              <div class="phone-mockup__notch"></div>
+              <div class="phone-mockup__screen"><img src="assets/images/screenshots/Pomodoro timer settings.jpg" alt="Pomodoro Settings" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Theme Showcase -->
+  <section class="section" style="background: var(--color-bg-secondary);">
+    <div class="container">
+      <div class="section__header animate-on-scroll" data-animate="fade-up">
+        <h2 class="section-title" data-i18n="fd.themes.title">Beautiful Themes</h2>
+        <p class="section-subtitle" data-i18n="fd.themes.desc">8 carefully crafted color schemes with light and dark modes</p>
+      </div>
+      <div class="theme-grid animate-on-scroll" data-animate="stagger">
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #1565C0;"></div>
+            <div class="theme-swatch__circle" style="background: #4DD0E1;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.ocean">Ocean</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #E65100;"></div>
+            <div class="theme-swatch__circle" style="background: #FFAB40;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.sunset">Sunset</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #2E7D32;"></div>
+            <div class="theme-swatch__circle" style="background: #A5D6A7;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.forest">Forest</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #7B1FA2;"></div>
+            <div class="theme-swatch__circle" style="background: #CE93D8;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.lavender">Lavender</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #00695C;"></div>
+            <div class="theme-swatch__circle" style="background: #80CBC4;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.aurora">Aurora</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #C62828;"></div>
+            <div class="theme-swatch__circle" style="background: #FF8A80;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.cherry">Cherry</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #1A237E;"></div>
+            <div class="theme-swatch__circle" style="background: #7986CB;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.midnight">Midnight</span>
+        </div>
+        <div class="theme-swatch">
+          <div class="theme-swatch__colors">
+            <div class="theme-swatch__circle" style="background: #E91E63;"></div>
+            <div class="theme-swatch__circle" style="background: #F48FB1;"></div>
+          </div>
+          <span class="theme-swatch__name" data-i18n="theme.candy">Candy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo"><img src="assets/images/logo.png" alt="GemMate" width="32" height="32"><span>GemMate</span></div>
+          <p class="footer__desc" data-i18n="footer.desc">AI-powered study companion built with Google's Gemma 4. 100% on-device, 100% private.</p>
+          <div class="footer__hackathon"><span>🏆</span><span data-i18n="footer.hackathon">Gemma 4 Good Hackathon 2026</span></div>
+        </div>
+        <div><div class="footer__col-title" data-i18n="footer.product">Product</div><div class="footer__col-links"><a href="features.html" class="footer__col-link" data-i18n="nav.features">Features</a><a href="architecture.html" class="footer__col-link" data-i18n="nav.architecture">Architecture</a><a href="download.html" class="footer__col-link" data-i18n="nav.download">Download</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.resources">Resources</div><div class="footer__col-links"><a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__col-link">GitHub</a><a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.demo">Demo Video</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.connect">Connect</div><div class="footer__col-links"><a href="about.html" class="footer__col-link" data-i18n="nav.about">About</a><a href="mailto:yepinglin20@gmail.com" class="footer__col-link">yepinglin20@gmail.com</a></div></div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 GemMate. Apache 2.0 License.</span>
+        <div class="footer__socials">
+          <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__social" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

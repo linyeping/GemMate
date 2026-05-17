@@ -33,8 +33,14 @@ class LocalGemmaService {
   Future<void> initialize() async {
     if (_isInitialized) return;
     try {
+      // Actually verify the model can be loaded before marking as available.
+      // Previously this just set _isInitialized = true without checking,
+      // causing false positives where the UI shows "offline model ready"
+      // but the first inference call crashes.
+      final model = await FlutterGemma.getActiveModel(maxTokens: 32);
+      await model.close();
       _isInitialized = true;
-      print('LocalGemmaService: initialized successfully');
+      print('LocalGemmaService: initialized successfully (model verified)');
     } catch (e) {
       print('LocalGemmaService: init failed: $e');
       _isInitialized = false;
