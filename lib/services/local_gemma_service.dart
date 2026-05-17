@@ -37,8 +37,13 @@ class LocalGemmaService {
       // Previously this just set _isInitialized = true without checking,
       // causing false positives where the UI shows "offline model ready"
       // but the first inference call crashes.
-      final model = await FlutterGemma.getActiveModel(maxTokens: 32);
-      await model.close();
+      //
+      // IMPORTANT: Do NOT call model.close() — getActiveModel() returns a
+      // shared singleton.  Closing it here would corrupt every subsequent
+      // generate/generateWithHistory call (INTERNAL: Failed to invoke the
+      // compiled model).  Just proving getActiveModel() doesn't throw is
+      // enough to confirm the model file is valid and loadable.
+      await FlutterGemma.getActiveModel(maxTokens: 32);
       _isInitialized = true;
       print('LocalGemmaService: initialized successfully (model verified)');
     } catch (e) {
@@ -83,6 +88,24 @@ class LocalGemmaService {
     }
   }
 
+  /// Extract the text of the last user message in [history].
+  String? _lastUserText(List<dynamic> history) {
+    for (int i = history.length - 1; i >= 0; i--) {
+      final msg = history[i];
+      bool isUser = false;
+      String? text;
+      if (msg is Map) {
+        isUser = msg['isUser'] ?? false;
+        text = msg['content']?.toString();
+      } else {
+        isUser = msg.isUser ?? false;
+        text = msg.content?.toString();
+      }
+      if (isUser) return text;
+    }
+    return null;
+  }
+
   Future<String> generateWithHistory(List<dynamic> history, String newMessage) async {
     if (!_isInitialized) await initialize();
 
@@ -117,8 +140,15 @@ class LocalGemmaService {
           }
         } catch (_) {}
       }
-      
-      await chat.addQueryChunk(Message(text: newMessage, isUser: true));
+
+      // Guard against duplicate: chat_screen already appends the current user
+      // message to history before calling route(), so history's last user
+      // entry IS newMessage.  Only add it if it wasn't already replayed.
+      // (Same dedup logic as ollama_service.dart.)
+      final lastUserText = _lastUserText(recent);
+      if (lastUserText != newMessage) {
+        await chat.addQueryChunk(Message(text: newMessage, isUser: true));
+      }
       final response = await chat.generateChatResponse();
       
       String result = 'No response';

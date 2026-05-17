@@ -35,6 +35,11 @@ dependencies:
   syncfusion_flutter_pdf: ^33.2.3
   archive: ^3.6.0          # unzip .docx (Word documents are ZIP archives)
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
 flutter:
   uses-material-design: true
   assets:
