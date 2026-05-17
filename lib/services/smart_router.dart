@@ -55,6 +55,11 @@ class SmartRouter {
     // Priority 2: Local model available → use on-device
     if (hasLocal) {
       print('SmartRouter: using local model (Gemma 4 E2B on-device)');
+      // Use chat history so the model has conversation context instead of
+      // treating every message as an isolated prompt ("memory loss" bug).
+      if (history.isNotEmpty) {
+        return await localGemma.generateWithHistory(history, prompt);
+      }
       return await localGemma.generate(prompt, systemPromptOverride: systemPromptOverride);
     }
 
@@ -66,6 +71,9 @@ class SmartRouter {
       if (localGemma.isAvailable) {
         connectionStore.setLocalModelAvailable(true);
         print('SmartRouter: initialized! using local model');
+        if (history.isNotEmpty) {
+          return await localGemma.generateWithHistory(history, prompt);
+        }
         return await localGemma.generate(prompt, systemPromptOverride: systemPromptOverride);
       }
     }

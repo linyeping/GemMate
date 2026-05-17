@@ -30,6 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ModelDownloadProgress? _downloadProgress;
   bool _showTokenInput = false;
   bool _useMirror = true;
+  bool _isDownloading = false; // mutex guard against concurrent downloads
 
   @override
   void initState() {
@@ -58,6 +59,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _startDownload() async {
+    // Prevent concurrent downloads — if already running, ignore tap
+    if (_isDownloading) return;
+    _isDownloading = true;
+
     setState(() {
       _downloadStatus = ModelDownloadStatus.downloading;
       _downloadProgress = ModelDownloadProgress(progress: 0, status: ModelDownloadStatus.downloading);
@@ -66,24 +71,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     try {
       final token = _hfTokenController.text.trim();
 
-      await FlutterGemma.installModel(
-        modelType: ModelType.gemmaIt,
-      )
-      .fromNetwork(
-        ModelDownloadService.modelUrl,
+      // Use our own resumable HTTP download instead of FlutterGemma.fromNetwork()
+      // which doesn't support resume and restarts from scratch on any interruption.
+      final filePath = await ModelDownloadService.downloadWithResume(
+        url: ModelDownloadService.modelUrl,
         token: token.isNotEmpty ? token : null,
-      )
-      .withProgress((progress) {
-        if (mounted) {
-          setState(() {
-            _downloadProgress = ModelDownloadProgress(
-              progress: progress.toDouble(),
-              status: ModelDownloadStatus.downloading,
-            );
-          });
-        }
-      })
-      .install();
+        onProgress: (progress) {
+          if (mounted) {
+            setState(() {
+              _downloadProgress = ModelDownloadProgress(
+                progress: progress,
+                status: ModelDownloadStatus.downloading,
+              );
+            });
+          }
+        },
+      );
+
+      // Register the downloaded file with flutter_gemma
+      await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
+          .fromFile(filePath)
+          .install();
 
       await ModelDownloadService().markInstalled();
       ConnectionStore().setLocalModelAvailable(true);
@@ -101,6 +109,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           _downloadStatus = ModelDownloadStatus.error;
         });
       }
+    } finally {
+      _isDownloading = false;
     }
   }
 
@@ -390,7 +400,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   const SizedBox(height: 16),
 
                   TextButton(
-                    onPressed: () => setState(() => _downloadStatus = ModelDownloadStatus.idle),
+                    onPressed: () {
+                      // Signal the download loop to stop; partial .part file is
+                      // kept so the next attempt can resume from where it left off.
+                      ModelDownloadService.requestCancel();
+                    },
                     child: const Text('Cancel', style: TextStyle(color: Colors.red)),
                   ),
                 ],

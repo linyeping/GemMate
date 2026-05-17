@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — GemMate</title>
+  <meta name="description" content="About GemMate and its developer. Built for the Gemma 4 Good Hackathon 2026.">
+  <meta name="theme-color" content="#050a15">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    .about-hero {
+      padding: calc(var(--nav-height) + var(--space-16)) 0 var(--space-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto var(--space-4);
+      background: var(--gradient-primary);
+      overflow: hidden;
+      box-shadow: var(--shadow-glow-md);
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-name {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+    }
+
+    .profile-role {
+      color: var(--color-cyan);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-top: var(--space-1);
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    .profile-detail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+
+    .profile-bio {
+      margin-top: var(--space-6);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-normal);
+      font-size: var(--text-base);
+    }
+
+    .profile-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    .story-section {
+      position: relative;
+    }
+
+    .story-card {
+      position: relative;
+    }
+
+    .story-card__label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .story-card__title {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-3);
+    }
+
+    .story-card__text {
+      color: var(--color-text-secondary);
+      line-height: var(--leading-normal);
+    }
+
+    .contact-section {
+      text-align: center;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-8);
+      border-radius: var(--radius-xl);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      font-size: var(--text-lg);
+      color: var(--color-cyan);
+      font-weight: var(--font-medium);
+      transition: all var(--duration-normal) var(--ease-in-out);
+    }
+
+    .contact-email:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--shadow-glow-sm);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo"><img src="assets/images/logo.png" alt="GemMate" width="36" height="36"><span>GemMate</span></a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+        <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+        <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+        <a href="about.html" class="nav__link is-active" data-i18n="nav.about">About</a>
+        <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+      </div>
+      <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle"><button class="lang-toggle__btn is-active" data-lang="en">EN</button><button class="lang-toggle__btn" data-lang="zh">中文</button></div>
+        <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="nav__github" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobileMenu">
+      <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+      <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+      <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+      <a href="about.html" class="nav__link is-active" data-i18n="nav.about">About</a>
+      <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="about-hero">
+    <div class="grid-bg"></div>
+    <div class="container" style="position:relative;">
+      <div class="label" data-i18n="about.label">About</div>
+      <h1 class="section-title" style="margin-top: var(--space-3);">
+        <span data-i18n="about.title">Meet the </span>
+        <span class="gradient-text" data-i18n="about.title-highlight">Developer</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Developer Profile -->
+  <section class="section section--sm">
+    <div class="container container--narrow">
+      <div class="glass-card glass-card--glow animate-on-scroll" data-animate="scale-in">
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <img src="assets/images/developer.jpg" alt="YePing Lin" width="100" height="100">
+          </div>
+          <div class="profile-name" data-i18n="about.name">YePing Lin</div>
+          <div class="profile-role" data-i18n="about.role">Developer & AI Enthusiast</div>
+
+          <div class="profile-details">
+            <div class="profile-detail">
+              <span>🏫</span>
+              <span data-i18n="about.university">Gansu University of Political Science and Law</span>
+            </div>
+            <div class="profile-detail">
+              <span>🎓</span>
+              <span data-i18n="about.major">Artificial Intelligence</span>
+            </div>
+          </div>
+
+          <p class="profile-bio" data-i18n="about.bio">
+            Passionate about making AI accessible for everyday learning. GemMate was born from the belief that powerful AI tools should work without internet and keep your data private.
+          </p>
+
+          <div class="profile-links">
+            <a href="https://github.com/linyeping" target="_blank" rel="noopener" class="btn btn--outline btn--sm">
+              <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <a href="https://kaggle.com/linyeping" target="_blank" rel="noopener" class="btn btn--outline btn--sm">
+              <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.075.312z"/></svg>
+              Kaggle
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story: Hackathon -->
+  <section class="section section--sm story-section" style="background: var(--color-bg-secondary);">
+    <div class="container">
+      <div class="grid grid--2 gap-8">
+        <div class="glass-card story-card animate-on-scroll" data-animate="fade-left">
+          <div class="story-card__label">
+            <span class="label" data-i18n="about.hackathon.label">The Hackathon</span>
+          </div>
+          <h3 class="story-card__title" data-i18n="about.hackathon.title">Gemma 4 Good Hackathon 2026</h3>
+          <p class="story-card__text" data-i18n="about.hackathon.desc">
+            GemMate was built for the Gemma 4 Good Hackathon 2026, a global challenge to create impactful applications using Google's Gemma 4 models. The goal: leverage on-device AI to solve real-world problems while keeping user data 100% private.
+          </p>
+        </div>
+
+        <div class="glass-card story-card animate-on-scroll" data-animate="fade-right">
+          <div class="story-card__label">
+            <span class="label" data-i18n="about.project.label">The Project</span>
+          </div>
+          <h3 class="story-card__title" data-i18n="about.project.title">Why GemMate?</h3>
+          <p class="story-card__text" data-i18n="about.project.desc">
+            University students struggle to create effective study materials. Cloud AI tools require subscriptions and internet. GemMate solves this by running Gemma 4 directly on your phone — generating flashcards, quizzes, and mind maps anywhere, anytime, for free.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section--sm contact-section">
+    <div class="container">
+      <div class="animate-on-scroll" data-animate="fade-up">
+        <div class="label" style="margin-bottom: var(--space-4);" data-i18n="about.contact.label">Get in Touch</div>
+        <a href="mailto:yepinglin20@gmail.com" class="contact-email">
+          <span>✉️</span>
+          <span>yepinglin20@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo"><img src="assets/images/logo.png" alt="GemMate" width="32" height="32"><span>GemMate</span></div>
+          <p class="footer__desc" data-i18n="footer.desc">AI-powered study companion built with Google's Gemma 4.</p>
+          <div class="footer__hackathon"><span>🏆</span><span data-i18n="footer.hackathon">Gemma 4 Good Hackathon 2026</span></div>
+        </div>
+        <div><div class="footer__col-title" data-i18n="footer.product">Product</div><div class="footer__col-links"><a href="features.html" class="footer__col-link" data-i18n="nav.features">Features</a><a href="architecture.html" class="footer__col-link" data-i18n="nav.architecture">Architecture</a><a href="download.html" class="footer__col-link" data-i18n="nav.download">Download</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.resources">Resources</div><div class="footer__col-links"><a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__col-link">GitHub</a><a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.demo">Demo Video</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.connect">Connect</div><div class="footer__col-links"><a href="about.html" class="footer__col-link" data-i18n="nav.about">About</a><a href="mailto:yepinglin20@gmail.com" class="footer__col-link">yepinglin20@gmail.com</a></div></div>
+      </div>
+      <div class="footer__bottom"><span>&copy; 2026 GemMate. Apache 2.0 License.</span></div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -73,8 +73,17 @@ class _CaptureScreenState extends State<CaptureScreen> {
     setState(() {
       _isAnalyzing = true;
       _analysisResult = '';
-      _isOfflineMode = !ConnectionStore().isLaptopConnected;
     });
+
+    // Re-check connection in real-time instead of relying on cached state.
+    // Weak WiFi / switching networks can make the cached value stale.
+    try {
+      final reachable = await OllamaService().isReachable();
+      ConnectionStore().setLaptopConnected(reachable);
+    } catch (_) {
+      ConnectionStore().setLaptopConnected(false);
+    }
+    _isOfflineMode = !ConnectionStore().isLaptopConnected;
 
     try {
       String response;

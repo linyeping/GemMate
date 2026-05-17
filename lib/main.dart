@@ -43,79 +43,100 @@ void main() async {
       final appDir = await getApplicationDocumentsDirectory();
       final internalPath = '${appDir.path}/gemma-4-E2B-it.litertlm';
       final internalFile = File(internalPath);
-      
+
+      bool modelRegistered = false;
+
       // Check internal storage first (model was already copied here)
       if (internalFile.existsSync()) {
-        print('Main: Found model in internal storage');
-        await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
-            .fromFile(internalPath)
-            .install();
-        print('Main: Model registered from internal storage');
-      } else {
+        // Integrity check: model should be at least 500 MB
+        final fileSize = internalFile.lengthSync();
+        if (fileSize < 500 * 1024 * 1024) {
+          print('Main: Model file too small (${fileSize ~/ (1024 * 1024)} MB), likely corrupted — deleting');
+          try { internalFile.deleteSync(); } catch (_) {}
+        } else {
+          print('Main: Found model in internal storage (${fileSize ~/ (1024 * 1024)} MB)');
+          await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
+              .fromFile(internalPath)
+              .install();
+          print('Main: Model registered from internal storage');
+          modelRegistered = true;
+        }
+      }
+
+      if (!modelRegistered) {
         // Try external storage and copy to internal
         const externalPath = '/sdcard/Download/gemma-4-E2B-it.litertlm';
         final externalFile = File(externalPath);
-        if (externalFile.existsSync()) {
+        if (externalFile.existsSync() && externalFile.lengthSync() > 500 * 1024 * 1024) {
           print('Main: Copying model from external to internal storage...');
           await externalFile.copy(internalPath);
           await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
               .fromFile(internalPath)
               .install();
           print('Main: Model registered from external→internal copy');
-        } else {
-          // Fallback: flutter_gemma's `fromNetwork().install()` stores
-          // weights inside a `repo/` directory and the file often lacks a
-          // `.litertlm` extension — so scan by size instead, picking the
-          // largest regular file over 50 MB.
-          print('Main: No canonical file, scanning by size...');
-          File? found;
-          int foundSize = 0;
-          try {
-            for (final entity in await appDir.list(recursive: true).toList()) {
-              if (entity is File) {
-                try {
-                  final size = entity.lengthSync();
-                  if (size > foundSize && size > 50 * 1024 * 1024) {
-                    found = entity;
-                    foundSize = size;
-                  }
-                } catch (_) {}
-              }
-            }
-          } catch (e) {
-            print('Main: scan failed: $e');
-          }
-          if (found != null) {
-            print('Main: Found weights at ${found.path} (${foundSize ~/ (1024 * 1024)} MB)');
-            if (found.path != internalPath) {
-              await found.copy(internalPath);
-            }
-            // Clear stale registration (likely still pointing at repo/ dir)
-            // before re-installing from the canonical file path.
-            try {
-              await FlutterGemma.uninstallModel(
-                  ModelDownloadService.modelFileName);
-            } catch (_) {}
-            await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
-                .fromFile(internalPath)
-                .install();
-            print('Main: Model re-registered from canonical path');
-          } else {
-            // Genuinely not found anywhere — clear the installed flag so the
-            // UI can prompt the user to re-download.
-            print('Main: No weights found anywhere, clearing flag');
-            await downloadService.deleteModel();
-          }
+          modelRegistered = true;
         }
       }
 
-      final localGemma = LocalGemmaService();
-      await localGemma.initialize();
-      ConnectionStore().setLocalModelAvailable(localGemma.isAvailable);
-      print('Main: Local model ready: ${localGemma.isAvailable}');
+      if (!modelRegistered) {
+        // Fallback: flutter_gemma's `fromNetwork().install()` stores
+        // weights inside a `repo/` directory and the file often lacks a
+        // `.litertlm` extension — so scan by size instead, picking the
+        // largest regular file over 500 MB.
+        print('Main: No canonical file, scanning by size...');
+        File? found;
+        int foundSize = 0;
+        try {
+          for (final entity in await appDir.list(recursive: true).toList()) {
+            if (entity is File) {
+              try {
+                final size = entity.lengthSync();
+                if (size > foundSize && size > 500 * 1024 * 1024) {
+                  found = entity;
+                  foundSize = size;
+                }
+              } catch (_) {}
+            }
+          }
+        } catch (e) {
+          print('Main: scan failed: $e');
+        }
+        if (found != null) {
+          print('Main: Found weights at ${found.path} (${foundSize ~/ (1024 * 1024)} MB)');
+          if (found.path != internalPath) {
+            await found.copy(internalPath);
+          }
+          try {
+            await FlutterGemma.uninstallModel(
+                ModelDownloadService.modelFileName);
+          } catch (_) {}
+          await FlutterGemma.installModel(modelType: ModelType.gemmaIt)
+              .fromFile(internalPath)
+              .install();
+          print('Main: Model re-registered from canonical path');
+          modelRegistered = true;
+        }
+      }
+
+      if (!modelRegistered) {
+        // Genuinely not found anywhere — clear the installed flag so the
+        // UI can prompt the user to re-download, breaking any loop.
+        print('Main: No valid weights found anywhere, clearing flag');
+        await downloadService.deleteModel();
+      } else {
+        final localGemma = LocalGemmaService();
+        await localGemma.initialize();
+        ConnectionStore().setLocalModelAvailable(localGemma.isAvailable);
+        print('Main: Local model ready: ${localGemma.isAvailable}');
+      }
     }
   } catch (e) {
+    // If model init crashes, clean up to prevent infinite restart loop
     print('Main: Model init failed (non-fatal): $e');
+    try {
+      await ModelDownloadService().deleteModel();
+      print('Main: Cleared model flag after init failure to prevent loop');
+    } catch (_) {}
   }
 
   // Load saved Ollama IP — must not crash

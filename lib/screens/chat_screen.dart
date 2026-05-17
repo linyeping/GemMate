@@ -327,7 +327,15 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       String response;
       if (imageBase64 != null) {
-        response = await _router.ollama.chatWithImage(imageBase64, msgText);
+        // Image/vision requires Ollama — check connection first instead of
+        // blindly calling and crashing when offline.
+        await _router.checkConnection();
+        if (_connectionStore.isLaptopConnected) {
+          response = await _router.ollama.chatWithImage(imageBase64, msgText);
+        } else {
+          response = '⚠️ Image analysis requires a laptop connection (Ollama with vision model).\n\n'
+              'Please connect to your laptop in Settings, or use the Camera/OCR feature for text extraction.';
+        }
       } else {
         response = await _router.route(_chatStore.activeMessages, modelQuery);
       }

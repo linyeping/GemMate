@@ -1,0 +1,131 @@
+:root {
+  /* === Deep Space Blue + Cyan Glow Palette === */
+  --color-bg-primary: #050a15;
+  --color-bg-secondary: #0a1628;
+  --color-bg-tertiary: #0f1f3a;
+  --color-bg-card: rgba(15, 31, 58, 0.6);
+
+  /* Gradient system */
+  --gradient-primary: linear-gradient(135deg, #1565C0, #4DD0E1);
+  --gradient-secondary: linear-gradient(135deg, #0D47A1, #1565C0);
+  --gradient-accent: linear-gradient(135deg, #4DD0E1, #00BCD4);
+  --gradient-hero: linear-gradient(180deg, #050a15 0%, #0a1628 50%, #0f1f3a 100%);
+  --gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(77, 208, 225, 0.15) 0%, transparent 60%);
+
+  /* Text */
+  --color-text-primary: #E8EDF5;
+  --color-text-secondary: #8FA3BF;
+  --color-text-muted: #4A6182;
+  --color-text-accent: #4DD0E1;
+
+  /* Accent colors */
+  --color-cyan: #4DD0E1;
+  --color-cyan-dim: rgba(77, 208, 225, 0.15);
+  --color-cyan-glow: rgba(77, 208, 225, 0.4);
+  --color-blue: #1565C0;
+  --color-blue-light: #42A5F5;
+  --color-indigo: #7986CB;
+
+  /* Feature accent colors (from app themes) */
+  --color-ocean: #4DD0E1;
+  --color-sunset: #FFAB40;
+  --color-forest: #A5D6A7;
+  --color-lavender: #CE93D8;
+  --color-aurora: #80CBC4;
+  --color-cherry: #FF8A80;
+  --color-midnight: #7986CB;
+  --color-candy: #F48FB1;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(77, 208, 225, 0.3);
+  --glass-blur: 20px;
+
+  /* Typography */
+  --font-sans: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.5rem;
+  --text-6xl: 4.5rem;
+  --text-hero: clamp(2.5rem, 6vw, 5rem);
+  --text-section-title: clamp(2rem, 4vw, 3.5rem);
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Border radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6);
+  --shadow-glow-sm: 0 0 15px rgba(77, 208, 225, 0.2);
+  --shadow-glow-md: 0 0 30px rgba(77, 208, 225, 0.3);
+  --shadow-glow-lg: 0 0 60px rgba(77, 208, 225, 0.2);
+  --shadow-glow-btn: 0 4px 20px rgba(77, 208, 225, 0.4);
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 700ms;
+  --duration-page: 1000ms;
+
+  /* Layout */
+  --container-max: 1200px;
+  --container-narrow: 800px;
+  --container-wide: 1400px;
+  --nav-height: 72px;
+
+  /* Z-index */
+  --z-particles: -1;
+  --z-content: 1;
+  --z-nav: 100;
+  --z-nav-mobile: 150;
+  --z-lightbox: 200;
+  --z-dots: 90;
+}

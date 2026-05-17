@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download — GemMate</title>
+  <meta name="description" content="Download GemMate APK and set up on-device AI for studying.">
+  <meta name="theme-color" content="#050a15">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    .dl-hero {
+      padding: calc(var(--nav-height) + var(--space-16)) 0 var(--space-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dl-main {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+
+    .dl-main__icon {
+      font-size: 4rem;
+      margin-bottom: var(--space-4);
+    }
+
+    .dl-main__version {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin-top: var(--space-3);
+    }
+
+    .dl-steps {
+      counter-reset: step-counter;
+    }
+
+    .dl-step {
+      position: relative;
+      padding-left: var(--space-12);
+      padding-bottom: var(--space-8);
+      border-left: 2px solid var(--glass-border);
+      margin-left: var(--space-4);
+    }
+
+    .dl-step:last-child {
+      border-left-color: transparent;
+      padding-bottom: 0;
+    }
+
+    .dl-step::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute;
+      left: -16px;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+      color: #fff;
+      box-shadow: var(--shadow-glow-sm);
+    }
+
+    .dl-step__title {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-2);
+    }
+
+    .dl-step__desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-3);
+    }
+
+    @media (max-width: 640px) {
+      .dl-step {
+        padding-left: var(--space-8);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo"><img src="assets/images/logo.png" alt="GemMate" width="36" height="36"><span>GemMate</span></a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+        <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+        <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+        <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+        <a href="download.html" class="nav__link is-active" data-i18n="nav.download">Download</a>
+      </div>
+      <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle"><button class="lang-toggle__btn is-active" data-lang="en">EN</button><button class="lang-toggle__btn" data-lang="zh">中文</button></div>
+        <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="nav__github" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobileMenu">
+      <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+      <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+      <a href="architecture.html" class="nav__link" data-i18n="nav.architecture">Architecture</a>
+      <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+      <a href="download.html" class="nav__link is-active" data-i18n="nav.download">Download</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="dl-hero">
+    <div class="grid-bg"></div>
+    <div class="container" style="position:relative;">
+      <div class="label" data-i18n="dl.label">Download</div>
+      <h1 class="section-title" style="margin-top: var(--space-3);">
+        <span data-i18n="dl.title">Get </span>
+        <span class="gradient-text" data-i18n="dl.title-highlight">GemMate</span>
+      </h1>
+      <p class="section-subtitle" style="margin: 0 auto;" data-i18n="dl.subtitle">Download the APK and start studying smarter today</p>
+    </div>
+  </section>
+
+  <!-- Primary Download -->
+  <section class="section section--sm">
+    <div class="container container--narrow">
+      <div class="glass-card glass-card--glow animate-on-scroll" data-animate="scale-in">
+        <div class="dl-main">
+          <div class="dl-main__icon">📱</div>
+          <a href="https://github.com/linyeping/GemMate/releases/latest" target="_blank" rel="noopener" class="btn btn--primary btn--lg" data-i18n="dl.btn">
+            Download Latest APK
+          </a>
+          <p class="dl-main__version" data-i18n="dl.version">Version 1.3.0 · Android 8.0+</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Build from Source -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="container container--narrow">
+      <div class="animate-on-scroll" data-animate="fade-up">
+        <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);" data-i18n="dl.source.title">Build from Source</h2>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);" data-i18n="dl.source.desc">Want to build GemMate yourself? Clone the repository and build with Flutter.</p>
+
+        <div class="code-block" style="margin-bottom: var(--space-4);">
+          <button class="code-block__copy">Copy</button>
+          <code>git clone https://github.com/linyeping/GemMate.git
+cd GemMate
+flutter pub get
+flutter run</code>
+        </div>
+
+        <div class="code-block">
+          <button class="code-block__copy">Copy</button>
+          <code># Build release APK
+flutter build apk --release</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ollama Setup -->
+  <section class="section section--sm">
+    <div class="container container--narrow">
+      <div class="animate-on-scroll" data-animate="fade-up">
+        <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);" data-i18n="dl.ollama.title">Laptop GPU Setup (Optional)</h2>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);" data-i18n="dl.ollama.desc">For faster AI responses, connect GemMate to Ollama running on your laptop.</p>
+
+        <div class="dl-steps">
+          <div class="dl-step">
+            <div class="dl-step__title" data-i18n="dl.ollama.step1">Install Ollama</div>
+            <div class="code-block"><button class="code-block__copy">Copy</button><code># Download from https://ollama.com
+# Then pull the Gemma 4 model:
+ollama pull gemma4:e4b</code></div>
+          </div>
+
+          <div class="dl-step">
+            <div class="dl-step__title" data-i18n="dl.ollama.step2">Start Ollama Server</div>
+            <div class="code-block"><button class="code-block__copy">Copy</button><code># Allow network access:
+set OLLAMA_HOST=0.0.0.0
+ollama serve</code></div>
+          </div>
+
+          <div class="dl-step">
+            <div class="dl-step__title" data-i18n="dl.ollama.step3">Connect from GemMate</div>
+            <div class="dl-step__desc" data-i18n="dl.ollama.step3.desc">Open GemMate Settings, enter your laptop's IP address (e.g. 192.168.1.100:11434). GemMate will auto-detect and use the faster GPU model when connected.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- On-device model -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="container container--narrow">
+      <div class="animate-on-scroll" data-animate="fade-up">
+        <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);" data-i18n="dl.model.title">On-Device Model</h2>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);" data-i18n="dl.model.desc">Download the Gemma 4 E2B model directly in the app, or push it via ADB.</p>
+
+        <div class="grid grid--2 gap-6">
+          <div class="glass-card" style="padding: var(--space-6);">
+            <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">📲</div>
+            <h4 style="margin-bottom: var(--space-2);" data-i18n="dl.model.inapp">In-App Download</h4>
+            <p style="color: var(--color-text-muted); font-size: var(--text-sm);" data-i18n="dl.model.inapp.desc">Open GemMate → Settings → Download Model. The app will download and install Gemma 4 E2B automatically.</p>
+          </div>
+          <div class="glass-card" style="padding: var(--space-6);">
+            <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">🔌</div>
+            <h4 style="margin-bottom: var(--space-2);" data-i18n="dl.model.adb">ADB Push</h4>
+            <div class="code-block" style="margin-top: var(--space-3);"><code>adb push gemma4-e2b.bin \
+  /data/local/tmp/</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo"><img src="assets/images/logo.png" alt="GemMate" width="32" height="32"><span>GemMate</span></div>
+          <p class="footer__desc" data-i18n="footer.desc">AI-powered study companion built with Google's Gemma 4.</p>
+          <div class="footer__hackathon"><span>🏆</span><span data-i18n="footer.hackathon">Gemma 4 Good Hackathon 2026</span></div>
+        </div>
+        <div><div class="footer__col-title" data-i18n="footer.product">Product</div><div class="footer__col-links"><a href="features.html" class="footer__col-link" data-i18n="nav.features">Features</a><a href="architecture.html" class="footer__col-link" data-i18n="nav.architecture">Architecture</a><a href="download.html" class="footer__col-link" data-i18n="nav.download">Download</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.resources">Resources</div><div class="footer__col-links"><a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__col-link">GitHub</a><a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.demo">Demo Video</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.connect">Connect</div><div class="footer__col-links"><a href="about.html" class="footer__col-link" data-i18n="nav.about">About</a><a href="mailto:yepinglin20@gmail.com" class="footer__col-link">yepinglin20@gmail.com</a></div></div>
+      </div>
+      <div class="footer__bottom"><span>&copy; 2026 GemMate. Apache 2.0 License.</span></div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

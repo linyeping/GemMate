@@ -1,0 +1,112 @@
+/* === Features Page === */
+.features-hero {
+  padding: calc(var(--nav-height) + var(--space-16)) 0 var(--space-12);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.features-hero .grid-bg {
+  opacity: 0.5;
+}
+
+/* Feature section separator */
+.feature-section {
+  position: relative;
+  padding: var(--space-16) 0;
+  border-top: 1px solid var(--glass-border);
+}
+
+.feature-section:nth-child(even) {
+  background: var(--color-bg-secondary);
+}
+
+/* Accent bar on feature icon */
+.feature-section__accent {
+  width: 40px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+}
+
+/* Multi-phone display */
+.phone-group {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.phone-group .phone-mockup--sm:nth-child(2) {
+  margin-top: var(--space-8);
+}
+
+.phone-group .phone-mockup--sm:nth-child(3) {
+  margin-top: var(--space-4);
+}
+
+/* Theme showcase */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.theme-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+.theme-swatch:hover {
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+}
+
+.theme-swatch__colors {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.theme-swatch__circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-swatch__name {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-medium);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .phone-group {
+    justify-content: center;
+  }
+
+  .phone-group .phone-mockup--sm:nth-child(3) {
+    display: none;
+  }
+
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .phone-group .phone-mockup--sm:nth-child(2) {
+    display: none;
+  }
+
+  .feature-section {
+    padding: var(--space-10) 0;
+  }
+}

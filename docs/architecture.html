@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — GemMate</title>
+  <meta name="description" content="GemMate's smart routing architecture: on-device Gemma 4 E2B and Ollama LAN GPU acceleration.">
+  <meta name="theme-color" content="#050a15">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/architecture.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo"><img src="assets/images/logo.png" alt="GemMate" width="36" height="36"><span>GemMate</span></a>
+      <div class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+        <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+        <a href="architecture.html" class="nav__link is-active" data-i18n="nav.architecture">Architecture</a>
+        <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+        <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+      </div>
+      <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle"><button class="lang-toggle__btn is-active" data-lang="en">EN</button><button class="lang-toggle__btn" data-lang="zh">中文</button></div>
+        <a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="nav__github" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile" id="mobileMenu">
+      <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+      <a href="features.html" class="nav__link" data-i18n="nav.features">Features</a>
+      <a href="architecture.html" class="nav__link is-active" data-i18n="nav.architecture">Architecture</a>
+      <a href="about.html" class="nav__link" data-i18n="nav.about">About</a>
+      <a href="download.html" class="nav__link" data-i18n="nav.download">Download</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <section class="arch-hero">
+    <div class="grid-bg"></div>
+    <div class="container" style="position:relative;">
+      <div class="label" data-i18n="arch.label">Architecture</div>
+      <h1 class="section-title" style="margin-top: var(--space-3);">
+        <span data-i18n="arch.title">How GemMate </span>
+        <span class="gradient-text" data-i18n="arch.title-highlight">Works</span>
+      </h1>
+      <p class="section-subtitle" style="margin: 0 auto;" data-i18n="arch.subtitle">Smart routing between on-device and local GPU inference</p>
+    </div>
+  </section>
+
+  <!-- Architecture Diagram -->
+  <section class="section">
+    <div class="container">
+      <div class="arch-diagram animate-on-scroll" data-animate="fade-up">
+        <!-- Phone -->
+        <div class="arch-node arch-node--phone">
+          <div class="arch-node__icon">📱</div>
+          <div class="arch-node__info">
+            <div class="arch-node__title" data-i18n="arch.app.title">GemMate App</div>
+            <div class="arch-node__subtitle" data-i18n="arch.app.subtitle">Chat · Flashcards · Quizzes · Mind Maps</div>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="arch-connector">
+          <div class="arch-connector__line"><div class="arch-connector__pulse"></div></div>
+        </div>
+
+        <!-- Smart Router -->
+        <div class="arch-node arch-node--router">
+          <div class="arch-node__icon">🔀</div>
+          <div class="arch-node__info">
+            <div class="arch-node__title" data-i18n="arch.router.title">Smart Router</div>
+            <div class="arch-node__subtitle" data-i18n="arch.router.desc">Auto-selects the best AI model</div>
+          </div>
+        </div>
+
+        <!-- Branch connector -->
+        <div class="arch-connector">
+          <div class="arch-connector__line"><div class="arch-connector__pulse"></div></div>
+        </div>
+
+        <!-- Branch: On-Device & Ollama -->
+        <div class="arch-branch">
+          <div>
+            <div class="arch-node arch-node--ondevice">
+              <div class="arch-node__icon">🧠</div>
+              <div class="arch-node__info">
+                <div class="arch-node__title" data-i18n="arch.ondevice">On-Device</div>
+                <div class="arch-node__subtitle"><strong data-i18n="arch.ondevice.model">Gemma 4 E2B</strong></div>
+                <div class="arch-node__subtitle" data-i18n="arch.ondevice.desc">Runs via LiteRT-LM. Offline, 3-8s.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="arch-node arch-node--ollama">
+              <div class="arch-node__icon">💻</div>
+              <div class="arch-node__info">
+                <div class="arch-node__title" data-i18n="arch.ollama">LAN GPU</div>
+                <div class="arch-node__subtitle"><strong data-i18n="arch.ollama.model">Gemma 4 E4B</strong></div>
+                <div class="arch-node__subtitle" data-i18n="arch.ollama.desc">Via Ollama on laptop. &lt;1s response.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Routing Table -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="container container--narrow">
+      <div class="section__header animate-on-scroll" data-animate="fade-up">
+        <h2 class="section-title" style="font-size: var(--text-3xl);" data-i18n="arch.router.title">Smart Router</h2>
+      </div>
+      <div class="animate-on-scroll" data-animate="fade-up">
+        <table class="arch-table">
+          <thead>
+            <tr>
+              <th data-i18n="arch.condition">Condition</th>
+              <th data-i18n="arch.model">Model</th>
+              <th data-i18n="arch.latency">Latency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td data-i18n="arch.c1">WiFi + Laptop available</td><td data-i18n="arch.c1.model">Gemma 4 E4B via Ollama</td><td data-i18n="arch.c1.latency">&lt; 1s</td></tr>
+            <tr><td data-i18n="arch.c2">No WiFi, model installed</td><td data-i18n="arch.c2.model">Gemma 4 E2B on-device</td><td data-i18n="arch.c2.latency">3-8s</td></tr>
+            <tr><td data-i18n="arch.c3">WiFi + No laptop</td><td data-i18n="arch.c3.model">Gemma 4 E2B on-device</td><td data-i18n="arch.c3.latency">3-8s</td></tr>
+            <tr><td data-i18n="arch.c4">No WiFi, no model</td><td data-i18n="arch.c4.model">Prompt to download</td><td data-i18n="arch.c4.latency">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header animate-on-scroll" data-animate="fade-up">
+        <div class="label" data-i18n="arch.tech.label">Tech Stack</div>
+        <h2 class="section-title">
+          <span data-i18n="arch.tech.title">Built With </span>
+          <span class="gradient-text" data-i18n="arch.tech.title-highlight">Modern Tools</span>
+        </h2>
+      </div>
+      <div class="grid grid--3 gap-6 animate-on-scroll" data-animate="stagger">
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">🤖</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.ai">AI Model</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">Gemma 4 E2B / E4B</p>
+        </div>
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">⚡</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.runtime">Runtime</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">LiteRT-LM (on-device) + Ollama (GPU)</p>
+        </div>
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">💎</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.framework">Framework</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">Flutter 3.41 / Dart</p>
+        </div>
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">🧮</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.algo">Study Algorithm</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">SM-2 Spaced Repetition</p>
+        </div>
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">👁️</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.ocr">OCR / Vision</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">ML Kit (offline) + Gemma 4 multimodal</p>
+        </div>
+        <div class="glass-card" style="padding: var(--space-6);">
+          <div style="font-size: var(--text-2xl); margin-bottom: var(--space-3);">💾</div>
+          <h4 style="margin-bottom: var(--space-2);" data-i18n="arch.tech.storage">Storage</h4>
+          <p style="color: var(--color-text-muted); font-size: var(--text-sm);">SharedPreferences + JSON</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="section section--sm" style="background: var(--color-bg-secondary);">
+    <div class="container container--narrow">
+      <div class="glass-card glass-card--glow animate-on-scroll" data-animate="scale-in">
+        <div style="text-align: center; margin-bottom: var(--space-6);">
+          <div style="font-size: var(--text-4xl); margin-bottom: var(--space-3);">🛡️</div>
+          <h2 style="font-size: var(--text-2xl);" data-i18n="arch.privacy.title">Privacy by Design</h2>
+          <p style="color: var(--color-text-secondary); margin-top: var(--space-2);" data-i18n="arch.privacy.desc">Your data never leaves your device. No cloud. No tracking. No API keys. Open source under Apache 2.0.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div class="privacy-item"><div class="privacy-item__icon">✓</div><div class="privacy-item__text" data-i18n="arch.privacy.1">Zero data collection — all processing stays on your device</div></div>
+          <div class="privacy-item"><div class="privacy-item__icon">✓</div><div class="privacy-item__text" data-i18n="arch.privacy.2">No API keys needed — Gemma 4 runs locally</div></div>
+          <div class="privacy-item"><div class="privacy-item__icon">✓</div><div class="privacy-item__text" data-i18n="arch.privacy.3">Open source — audit the code yourself on GitHub</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo"><img src="assets/images/logo.png" alt="GemMate" width="32" height="32"><span>GemMate</span></div>
+          <p class="footer__desc" data-i18n="footer.desc">AI-powered study companion built with Google's Gemma 4.</p>
+          <div class="footer__hackathon"><span>🏆</span><span data-i18n="footer.hackathon">Gemma 4 Good Hackathon 2026</span></div>
+        </div>
+        <div><div class="footer__col-title" data-i18n="footer.product">Product</div><div class="footer__col-links"><a href="features.html" class="footer__col-link" data-i18n="nav.features">Features</a><a href="architecture.html" class="footer__col-link" data-i18n="nav.architecture">Architecture</a><a href="download.html" class="footer__col-link" data-i18n="nav.download">Download</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.resources">Resources</div><div class="footer__col-links"><a href="https://github.com/linyeping/GemMate" target="_blank" rel="noopener" class="footer__col-link">GitHub</a><a href="https://youtu.be/tLnDOzBy_Kc" target="_blank" rel="noopener" class="footer__col-link" data-i18n="footer.demo">Demo Video</a></div></div>
+        <div><div class="footer__col-title" data-i18n="footer.connect">Connect</div><div class="footer__col-links"><a href="about.html" class="footer__col-link" data-i18n="nav.about">About</a><a href="mailto:yepinglin20@gmail.com" class="footer__col-link">yepinglin20@gmail.com</a></div></div>
+      </div>
+      <div class="footer__bottom"><span>&copy; 2026 GemMate. Apache 2.0 License.</span></div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

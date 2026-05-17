@@ -1,0 +1,112 @@
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.container--wide {
+  max-width: var(--container-wide);
+}
+
+/* Typography */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  font-size: var(--text-section-title);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+}
+
+.section-subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  max-width: 600px;
+}
+
+.label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-cyan);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Links */
+a.link {
+  color: var(--color-cyan);
+  transition: opacity var(--duration-fast) var(--ease-in-out);
+}
+
+a.link:hover {
+  opacity: 0.8;
+}
+
+/* Full-page section */
+.fp-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fp-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-glow);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out-expo);
+}
+
+.fp-section.is-active::before {
+  opacity: 1;
+}
+
+/* Section backgrounds */
+.fp-section--dark {
+  background: var(--color-bg-primary);
+}
+
+.fp-section--darker {
+  background: var(--color-bg-secondary);
+}
+
+.fp-section--gradient {
+  background: var(--gradient-hero);
+}
+
+/* Glow line separator */
+.glow-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-cyan-dim), transparent);
+}

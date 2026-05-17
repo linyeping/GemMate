@@ -1,0 +1,182 @@
+/* === Scroll-triggered Animations === */
+.animate-on-scroll {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: none !important;
+}
+
+/* Direction variants */
+[data-animate="fade-up"] {
+  transform: translateY(40px);
+}
+
+[data-animate="fade-down"] {
+  transform: translateY(-40px);
+}
+
+[data-animate="fade-left"] {
+  transform: translateX(-50px);
+}
+
+[data-animate="fade-right"] {
+  transform: translateX(50px);
+}
+
+[data-animate="scale-in"] {
+  transform: scale(0.9);
+}
+
+[data-animate="zoom-in"] {
+  transform: scale(0.85);
+}
+
+/* Stagger children */
+[data-animate="stagger"] > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+[data-animate="stagger"].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delays */
+[data-animate="stagger"].is-visible > *:nth-child(1) { transition-delay: 0ms; }
+[data-animate="stagger"].is-visible > *:nth-child(2) { transition-delay: 80ms; }
+[data-animate="stagger"].is-visible > *:nth-child(3) { transition-delay: 160ms; }
+[data-animate="stagger"].is-visible > *:nth-child(4) { transition-delay: 240ms; }
+[data-animate="stagger"].is-visible > *:nth-child(5) { transition-delay: 320ms; }
+[data-animate="stagger"].is-visible > *:nth-child(6) { transition-delay: 400ms; }
+[data-animate="stagger"].is-visible > *:nth-child(7) { transition-delay: 480ms; }
+[data-animate="stagger"].is-visible > *:nth-child(8) { transition-delay: 560ms; }
+[data-animate="stagger"].is-visible > *:nth-child(9) { transition-delay: 640ms; }
+[data-animate="stagger"].is-visible > *:nth-child(10) { transition-delay: 720ms; }
+[data-animate="stagger"].is-visible > *:nth-child(11) { transition-delay: 800ms; }
+[data-animate="stagger"].is-visible > *:nth-child(12) { transition-delay: 880ms; }
+
+/* === Hero entrance animations === */
+.hero__badge {
+  animation: hero-entrance 0.8s var(--ease-out-expo) 0.2s both;
+}
+
+.hero__title {
+  animation: hero-entrance 0.8s var(--ease-out-expo) 0.4s both;
+}
+
+.hero__subtitle {
+  animation: hero-entrance 0.8s var(--ease-out-expo) 0.6s both;
+}
+
+.hero__cta {
+  animation: hero-entrance 0.8s var(--ease-out-expo) 0.8s both;
+}
+
+.hero__stats {
+  animation: hero-entrance 0.8s var(--ease-out-expo) 1s both;
+}
+
+.hero__visual {
+  animation: hero-visual-entrance 1.2s var(--ease-out-expo) 0.5s both;
+}
+
+@keyframes hero-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-visual-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* === Grid line background effect === */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(77, 208, 225, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 208, 225, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+  pointer-events: none;
+}
+
+/* === Glow line animation === */
+.glow-line {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.glow-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  animation: glow-sweep 4s ease-in-out infinite;
+}
+
+@keyframes glow-sweep {
+  0% { left: -60%; }
+  100% { left: 100%; }
+}
+
+/* === Typing cursor === */
+.typing-cursor::after {
+  content: '|';
+  color: var(--color-cyan);
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-animate="stagger"] > * {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0ms !important;
+  }
+}
