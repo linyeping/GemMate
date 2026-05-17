@@ -1,6 +1,7 @@
 import 'package:flutter_gemma/flutter_gemma.dart';
 import '../core/text_utils.dart';
 import '../stores/locale_store.dart';
+import 'model_download_service.dart';
 
 class LocalGemmaService {
   // SINGLETON — same instance everywhere
@@ -33,22 +34,25 @@ class LocalGemmaService {
   Future<void> initialize() async {
     if (_isInitialized) return;
     try {
-      // Actually verify the model can be loaded before marking as available.
-      // Previously this just set _isInitialized = true without checking,
-      // causing false positives where the UI shows "offline model ready"
-      // but the first inference call crashes.
-      //
-      // IMPORTANT: Do NOT call model.close() — getActiveModel() returns a
-      // shared singleton.  Closing it here would corrupt every subsequent
-      // generate/generateWithHistory call (INTERNAL: Failed to invoke the
-      // compiled model).  Just proving getActiveModel() doesn't throw is
-      // enough to confirm the model file is valid and loadable.
       await FlutterGemma.getActiveModel(maxTokens: 32);
       _isInitialized = true;
       print('LocalGemmaService: initialized successfully (model verified)');
     } catch (e) {
-      print('LocalGemmaService: init failed: $e');
-      _isInitialized = false;
+      // getActiveModel() may throw due to a JNI pre-check
+      // (NativeLibraryLoader.nativeCheckLoaded) even when the underlying
+      // native engine loads the model successfully.  Fall back to checking
+      // whether the plugin considers the model installed — if the file is
+      // there and registered, mark as initialized and let the real inference
+      // call be the definitive test.
+      print('LocalGemmaService: getActiveModel probe failed ($e), checking file fallback');
+      final installed = await ModelDownloadService().isModelInstalled();
+      if (installed) {
+        _isInitialized = true;
+        print('LocalGemmaService: model file present, marking available');
+      } else {
+        print('LocalGemmaService: model not installed, unavailable');
+        _isInitialized = false;
+      }
     }
   }
 
