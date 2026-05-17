@@ -1,7 +1,6 @@
 import 'package:flutter_gemma/flutter_gemma.dart';
 import '../core/text_utils.dart';
 import '../stores/locale_store.dart';
-import 'model_download_service.dart';
 
 class LocalGemmaService {
   // SINGLETON — same instance everywhere
@@ -33,27 +32,15 @@ class LocalGemmaService {
 
   Future<void> initialize() async {
     if (_isInitialized) return;
-    try {
-      await FlutterGemma.getActiveModel(maxTokens: 32);
-      _isInitialized = true;
-      print('LocalGemmaService: initialized successfully (model verified)');
-    } catch (e) {
-      // getActiveModel() may throw due to a JNI pre-check
-      // (NativeLibraryLoader.nativeCheckLoaded) even when the underlying
-      // native engine loads the model successfully.  Fall back to checking
-      // whether the plugin considers the model installed — if the file is
-      // there and registered, mark as initialized and let the real inference
-      // call be the definitive test.
-      print('LocalGemmaService: getActiveModel probe failed ($e), checking file fallback');
-      final installed = await ModelDownloadService().isModelInstalled();
-      if (installed) {
-        _isInitialized = true;
-        print('LocalGemmaService: model file present, marking available');
-      } else {
-        print('LocalGemmaService: model not installed, unavailable');
-        _isInitialized = false;
-      }
-    }
+    // Lazy init: do NOT call getActiveModel() here.  Pre-creating the engine
+    // with a probe maxTokens (e.g. 32) leaves the native LiteRT state in a
+    // half-initialized form, so the real inference call later with a larger
+    // maxTokens crashes with "INTERNAL: Failed to create engine".  Trust that
+    // installModel().fromFile().install() registered the model correctly, and
+    // let the first generate() / generateWithHistory() call do the actual
+    // engine creation lazily.
+    _isInitialized = true;
+    print('LocalGemmaService: marked available (lazy init)');
   }
 
   /// [systemPromptOverride] — when set, replaces the default formatting rules

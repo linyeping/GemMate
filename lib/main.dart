@@ -131,12 +131,11 @@ void main() async {
       }
     }
   } catch (e) {
-    // If model init crashes, clean up to prevent infinite restart loop
-    print('Main: Model init failed (non-fatal): $e');
-    try {
-      await ModelDownloadService().deleteModel();
-      print('Main: Cleared model flag after init failure to prevent loop');
-    } catch (_) {}
+    // If model init crashes during startup, just log it — do NOT auto-delete
+    // the model.  A transient registration error must not nuke a 2.5 GB file
+    // the user just downloaded.  The chat path will surface a real error if
+    // the model is genuinely unusable.
+    print('Main: Model init failed (non-fatal, model file preserved): $e');
   }
 
   // Load saved Ollama IP — must not crash
