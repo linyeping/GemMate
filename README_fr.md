@@ -213,6 +213,8 @@ GemMate utilise une **architecture de routage intelligente** qui sélectionne au
 
 📦 **[Télécharger l'APK →](https://github.com/linyeping/GemMate/releases/latest)**
 
+🌐 **[Visiter la page produit →](https://gemmatedemo.netlify.app/)**
+
 ---
 
 ## 🚀 Installation

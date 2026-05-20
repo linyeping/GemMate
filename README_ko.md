@@ -213,6 +213,8 @@ GemMate는 사용 가능한 최적의 AI 모델을 자동으로 선택하는 **�
 
 📦 **[APK 다운로드 →](https://github.com/linyeping/GemMate/releases/latest)**
 
+🌐 **[제품 홈페이지 방문 →](https://gemmatedemo.netlify.app/)**
+
 ---
 
 ## 🚀 설치 방법

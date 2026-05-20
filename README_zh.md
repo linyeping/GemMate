@@ -213,6 +213,8 @@ GemMate 使用**智能路由架构**，自动选择最佳的可用 AI 模型：
 
 📦 **[下载 APK →](https://github.com/linyeping/GemMate/releases/latest)**
 
+🌐 **[访问产品主页 →](https://gemmatedemo.netlify.app/)**
+
 ---
 
 ## 🚀 安装

@@ -213,6 +213,8 @@ GemMate uses a **smart routing architecture** that automatically selects the bes
 
 📦 **[Download APK →](https://github.com/linyeping/GemMate/releases/latest)**
 
+🌐 **[Visit Product Homepage →](https://gemmatedemo.netlify.app/)**
+
 ---
 
 ## 🚀 Installation
